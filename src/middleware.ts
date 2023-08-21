@@ -8,10 +8,10 @@ import { type NextRequest, NextResponse } from "next/server";
 
 // });
 
-export default withClerkMiddleware((_req: NextRequest, e) => {
-  return NextResponse.next();
+export default withClerkMiddleware((_req: NextRequest) => {
+	return NextResponse.next();
 });
 
 export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+	matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };

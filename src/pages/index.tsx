@@ -1,7 +1,4 @@
 import { SignOutButton, useUser } from "@clerk/nextjs";
-import { faDiscord } from "@fortawesome/free-brands-svg-icons";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";

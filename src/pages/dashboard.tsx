@@ -1,5 +1,4 @@
-import { SignOutButton, UserButton, useUser } from "@clerk/nextjs";
-import { dark } from "@clerk/themes";
+import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import MenuBar from "~/components/MenuBar";

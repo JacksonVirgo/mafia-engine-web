@@ -2,7 +2,6 @@ import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import ReactDOM from "react-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faHouse, fas } from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
