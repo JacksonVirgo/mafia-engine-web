@@ -1,4 +1,5 @@
-import { SignOutButton, useUser } from "@clerk/nextjs";
+import { SignOutButton, UserButton, useUser } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { api } from "~/utils/api";
@@ -23,7 +24,7 @@ export default function Home() {
         }}
       >
         <div className="absolute left-0 top-0 p-6">
-          {/* <UserButton appearance={{ baseTheme: dark }} /> */}
+          <UserButton appearance={{ baseTheme: dark }} />
         </div>
         <h1 className="mb-2 text-6xl font-extrabold">
           <span className="text-red-400">Dash</span>board
