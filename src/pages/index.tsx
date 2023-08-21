@@ -1,4 +1,5 @@
 import { SignOutButton, useUser } from "@clerk/nextjs";
+import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -21,6 +22,9 @@ export default function Home() {
 
 	return (
 		<>
+			<Head>
+				<title>Mafia Engine</title>
+			</Head>
 			<main
 				className="flex h-screen max-h-screen flex-col items-center justify-center bg-repeat text-white"
 				style={{

@@ -1,4 +1,5 @@
 import { useUser } from "@clerk/nextjs";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import MenuBar from "~/components/MenuBar";
@@ -17,6 +18,9 @@ export default function Home() {
 
 	return (
 		<>
+			<Head>
+				<title>Mafia Engine - Dashboard</title>
+			</Head>
 			<main
 				className="flex h-screen flex-col items-center justify-center bg-repeat text-white"
 				style={{
