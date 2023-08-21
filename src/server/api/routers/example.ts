@@ -10,15 +10,4 @@ export const exampleRouter = createTRPCRouter({
         greeting: `Hello ${input.text}`,
       };
     }),
-  getAll: publicProcedure.query(({ ctx }) => {
-    return {};
-  }),
-
-  getUser: publicProcedure
-    .input(z.object({ authId: z.string().nullish() }))
-    .query(async ({ input }) => {
-      if (!input.authId) return {};
-      const user = await clerkClient.users.getUser(input.authId);
-      return user;
-    }),
 });
