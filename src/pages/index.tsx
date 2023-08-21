@@ -1,4 +1,4 @@
-import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect } from "react";
@@ -40,11 +40,21 @@ export default function Home() {
           </a>
         </p>
         <br />
-        <p>
-          {!user.isSignedIn && <SignInButton />}
+        <div className="w-32 text-center">
+          {!user.isSignedIn && <LoginButton />}
           {!!user.isSignedIn && <SignOutButton />}
-        </p>
+        </div>
       </main>
     </>
+  );
+}
+
+function LoginButton() {
+  return (
+    <Link href="/login">
+      <div className="rounded-md border border-white bg-opacity-100 p-2 text-center hover:bg-black hover:bg-opacity-50 hover:underline">
+        Login
+      </div>
+    </Link>
   );
 }
