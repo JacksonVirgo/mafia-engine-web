@@ -1,13 +1,4 @@
-import { clerkClient } from "@clerk/nextjs";
-import { TRPCError } from "@trpc/server";
-import { NextResponse } from "next/server";
-import { z } from "zod";
-import {
-  createTRPCMiddleware,
-  createTRPCRouter,
-  publicProcedure,
-  restrictedProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, restrictedProcedure } from "~/server/api/trpc";
 
 export const authRouter = createTRPCRouter({
   getUserData: restrictedProcedure.query(

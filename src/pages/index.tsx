@@ -2,23 +2,21 @@ import { SignOutButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { api } from "~/utils/api";
 
 export default function Home() {
   const router = useRouter();
   const user = useUser();
-  // const data = api.auth.getUserData.useQuery();
 
   useEffect(() => {
     if (user.isSignedIn) {
       if (user.user) {
-        router.push("/dashboard");
+        router.push("/dashboard").catch(console.log);
         // Redirect to /dashboard
       } else {
         // Redirect to an error page
       }
     }
-  }, [user, user.isSignedIn]);
+  }, [user, user.isSignedIn, router]);
 
   return (
     <>

@@ -21,7 +21,7 @@ import { clerkClient } from "@clerk/nextjs";
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 
-type CreateContextOptions = Record<string, never>;
+// type CreateContextOptions = Record<string, never>;
 
 /**
  * This is the actual context you will use in your router. It will be used to process every request
@@ -29,7 +29,7 @@ type CreateContextOptions = Record<string, never>;
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = async (opts: CreateNextContextOptions) => {
+export const createTRPCContext = (opts: CreateNextContextOptions) => {
   const { req } = opts;
   const sesh = getAuth(req);
   const userId = sesh.userId;

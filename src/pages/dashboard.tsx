@@ -1,5 +1,4 @@
 import { SignOutButton, useUser } from "@clerk/nextjs";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { api } from "~/utils/api";
@@ -11,9 +10,9 @@ export default function Home() {
 
   useEffect(() => {
     if (!user.isSignedIn) {
-      router.push("/login");
+      router.push("/login").catch(console.log);
     }
-  }, [user, user.isSignedIn]);
+  }, [user, user.isSignedIn, router]);
 
   return (
     <>
@@ -30,7 +29,7 @@ export default function Home() {
           <span className="text-red-400">Dash</span>board
         </h1>
         <p className="text-center text-xl">
-          This site's functionality is currently in development
+          This site&apos;s functionality is currently in development
           <br />
           but here is your data
         </p>
@@ -50,15 +49,5 @@ export default function Home() {
         </div>
       </main>
     </>
-  );
-}
-
-function LoginButton() {
-  return (
-    <Link href="/login">
-      <div className="rounded-md border border-white bg-opacity-100 p-2 text-center hover:bg-black hover:bg-opacity-50 hover:underline">
-        Login
-      </div>
-    </Link>
   );
 }
