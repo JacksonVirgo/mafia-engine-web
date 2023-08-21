@@ -7,16 +7,11 @@ import { api } from "~/utils/api";
 export default function Home() {
   const router = useRouter();
   const user = useUser();
-  // const data = api.auth.getUserData.useQuery();
+  const data = api.auth.getUserData.useQuery();
 
   useEffect(() => {
-    if (user.isSignedIn) {
-      if (user.user) {
-        router.push("/dashboard");
-        // Redirect to /dashboard
-      } else {
-        // Redirect to an error page
-      }
+    if (!user.isSignedIn) {
+      router.push("/login");
     }
   }, [user, user.isSignedIn]);
 
@@ -32,23 +27,26 @@ export default function Home() {
           {/* <UserButton appearance={{ baseTheme: dark }} /> */}
         </div>
         <h1 className="mb-2 text-6xl font-extrabold">
-          <span className="text-red-400">Mafia</span> Engine
+          <span className="text-red-400">Dash</span>board
         </h1>
-        <p className="text-xl">This site is currently in development</p>
-        <p>
-          Visit the{" "}
-          <a
-            href="https://discord.gg/social-deduction"
-            rel="noopener noreferrer"
-            className="text-red-100 underline hover:text-red-400"
-          >
-            Discord
-          </a>
+        <p className="text-center text-xl">
+          This site's functionality is currently in development
+          <br />
+          but here is your data
         </p>
         <br />
+        {data.isLoading && <p>Loading...</p>}
+        {!data.data?.user && <p>Unable to load data...</p>}
+        {data.data?.user && (
+          <div>
+            <p>Discord ID: {data.data.user.discordId}</p>
+            <p>Stored Username: {data.data.user.username}</p>
+          </div>
+        )}
+
+        <br />
         <div className="w-32 text-center">
-          {!user.isSignedIn && <LoginButton />}
-          {!!user.isSignedIn && <SignOutButton />}
+          <SignOutButton />
         </div>
       </main>
     </>

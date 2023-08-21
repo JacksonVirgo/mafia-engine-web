@@ -1,20 +1,7 @@
-import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { SignIn } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
-import Head from "next/head";
-import Link from "next/link";
-import { useEffect } from "react";
-import { api } from "~/utils/api";
 
 export default function Home() {
-  const user = useUser();
-  const userData = api.example.getUser.useQuery({
-    authId: user.user ? user.user.id : undefined,
-  });
-
-  useEffect(() => {
-    console.log(userData);
-  }, [userData, userData?.isLoading]);
-
   return (
     <>
       <main

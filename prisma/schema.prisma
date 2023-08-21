@@ -20,10 +20,9 @@ enum Status {
 }
 
 model User {
-    id        Int     @id @default(autoincrement())
-    discordId String  @unique
-    username  String  @unique
-    authId    String? @unique
+    id        Int    @id @default(autoincrement())
+    discordId String @unique
+    username  String @unique
 
     mvpStatus Status @default(None)
 

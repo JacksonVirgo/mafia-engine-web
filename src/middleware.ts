@@ -9,7 +9,6 @@ import { NextRequest, NextResponse } from "next/server";
 // });
 
 export default withClerkMiddleware((_req: NextRequest) => {
-  console.log("middleware running");
   return NextResponse.next();
 });
 export const config = {
