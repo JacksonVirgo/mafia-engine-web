@@ -8,6 +8,11 @@ import { LoginButton } from "~/pages";
 export default function MenuBar() {
 	const user = useUser();
 
+	// TODO:
+	// Remove HOME when at HOME
+	// Add LOGIN when not logged in
+	// Add DASHBOARD when logged in and not at DASHBOARD
+
 	return (
 		<div className="absolute left-0 top-0 flex w-full flex-row justify-start border-b border-b-white bg-black bg-opacity-30 p-2 align-middle">
 			<HomeButton />

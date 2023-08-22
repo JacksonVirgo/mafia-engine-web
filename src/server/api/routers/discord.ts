@@ -1,18 +1,25 @@
-import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 import { createTRPCRouter, restrictedProcedure } from "~/server/api/trpc";
-import { getUserGuilds } from "~/utils/discordAPI";
+import { getPermissionsInGuild, getUserGuilds } from "~/utils/discordAPI";
 
 export const discordRouter = createTRPCRouter({
 	guilds: restrictedProcedure.query(async ({ ctx: { oauth } }) => {
-		if (!oauth) throw new TRPCError({ code: "UNAUTHORIZED" });
 		return {
 			guilds: await getUserGuilds(oauth.token),
 		};
 	}),
 
-	discordMafia: restrictedProcedure.query(async ({ ctx: { oauth } }) => {
-		if (!oauth) throw new TRPCError({ code: "UNAUTHORIZED" });
+	validatePermissions: restrictedProcedure
+		.input(
+			z.object({
+				guildId: z.string(),
+			})
+		)
+		.query(async ({ ctx: { oauth }, input: { guildId } }) => {
+			return await getPermissionsInGuild(oauth.token, guildId);
+		}),
 
+	discordMafia: restrictedProcedure.query(async ({ ctx: { oauth } }) => {
 		const guilds = await getUserGuilds(oauth.token);
 		if (!guilds)
 			return {

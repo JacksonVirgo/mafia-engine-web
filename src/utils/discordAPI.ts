@@ -12,20 +12,54 @@ export type UserGuild = {
 
 export type UserGuilds = UserGuild[];
 
+function generateHeaders(authToken: string) {
+	return {
+		headers: {
+			Authorization: `Bearer ${authToken}`,
+		},
+	};
+}
+
+function getUrl(str: string) {
+	return `https://discord.com/api${str}`;
+}
+
 export async function getUserGuilds(authToken: string) {
 	try {
 		const res = await axios.get(
-			"https://discord.com/api/users/@me/guilds",
-			{
-				headers: {
-					Authorization: `Bearer ${authToken}`,
-				},
-			}
+			getUrl("/users/@me/guilds"),
+			generateHeaders(authToken)
 		);
 
 		if (!res.data) return null;
 		if (isGuildArray(res.data)) return res.data;
 		return null;
+	} catch (err) {
+		return null;
+	}
+}
+
+export async function getPermissionsInGuild(
+	authToken: string,
+	guildId: string
+) {
+	try {
+		const res = await axios.get(
+			getUrl(`/users/@me/guilds/${guildId}/member`),
+			generateHeaders(authToken)
+		);
+
+		const data = res.data as unknown;
+		if (!data) return null;
+		if (typeof data != "object") return null;
+		if (!("permissions" in data)) return null;
+		if (typeof data.permissions != "number") return null;
+
+		const permissions = {
+			isAdministrator: (data.permissions & 0x8) === 0x8,
+		};
+
+		return permissions;
 	} catch (err) {
 		return null;
 	}

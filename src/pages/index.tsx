@@ -1,25 +1,10 @@
 import { SignOutButton, useUser } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import MenuBar from "~/components/MenuBar";
 
 export default function Home() {
-	const router = useRouter();
 	const user = useUser();
-
-	useEffect(() => {
-		if (user.isSignedIn) {
-			if (user.user) {
-				router.push("/dashboard").catch(console.log);
-				// Redirect to /dashboard
-			} else {
-				// Redirect to an error page
-			}
-		}
-	}, [user, user.isSignedIn, router]);
-
 	return (
 		<>
 			<Head>

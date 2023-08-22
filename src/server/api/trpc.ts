@@ -120,6 +120,8 @@ const isLoggedIn = createTRPCMiddleware(async (opts) => {
 			}
 		}
 
+		if (!discordToken) throw new TRPCError({ code: "UNAUTHORIZED" });
+
 		const newCTX = {
 			...ctx,
 			discordId,
