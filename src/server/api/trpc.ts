@@ -11,9 +11,8 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import { prisma } from "~/server/db";
 import { initTRPC, TRPCError } from "@trpc/server";
-import { getAuth, OauthAccessToken } from "@clerk/nextjs/server";
+import { getAuth, type OauthAccessToken } from "@clerk/nextjs/server";
 import { clerkClient } from "@clerk/nextjs";
-import axios from "axios";
 /**
  * 1. CONTEXT
  *

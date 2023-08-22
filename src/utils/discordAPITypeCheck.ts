@@ -1,4 +1,4 @@
-import { UserGuild } from "./discordAPI";
+import type { UserGuild } from "./discordAPI";
 
 export function isGuild(guild: unknown): guild is UserGuild {
 	if (typeof guild !== "object") return false;

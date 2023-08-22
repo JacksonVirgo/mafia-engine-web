@@ -1,6 +1,4 @@
 import { TRPCError } from "@trpc/server";
-import axios from "axios";
-import { REST, Routes } from "discord.js";
 import { createTRPCRouter, restrictedProcedure } from "~/server/api/trpc";
 import { getUserGuilds } from "~/utils/discordAPI";
 
