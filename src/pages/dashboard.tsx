@@ -8,7 +8,11 @@ import { api } from "~/utils/api";
 export default function Home() {
 	const router = useRouter();
 	const user = useUser();
-	const data = api.auth.getUserData.useQuery();
+	const server = api.discord.discordMafia.useQuery();
+
+	useEffect(() => {
+		console.log(server.data);
+	}, [server, server.isLoading]);
 
 	useEffect(() => {
 		if (!user.isSignedIn) {
@@ -35,12 +39,30 @@ export default function Home() {
 				<p className="text-center text-lg">
 					This site is in an invite-only closed beta.
 				</p>
-				<p className="text-md text-center">
-					{data.data?.user?.username
-						? data.data.user.username + ", you"
-						: "You"}{" "}
-					do not have access to this page.
-				</p>
+
+				{server.isLoading && (
+					<div className="animate-pulse">Loading...</div>
+				)}
+				{server.isError && <div>Error loading server</div>}
+				{server.data?.isAdministrator && (
+					<p className="text-md text-center">Welcome</p>
+				)}
+
+				{!server.data ||
+					(!server.data.isAdministrator && (
+						<p className="text-md text-center">
+							You need to be an administrator to access this page.
+							<br />
+							Visit the{" "}
+							<a
+								href="https://discord.gg/social-deduction"
+								rel="noopener noreferrer"
+								className="underline hover:text-red-400"
+							>
+								Discord
+							</a>
+						</p>
+					))}
 			</main>
 		</>
 	);

@@ -11,8 +11,9 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import { prisma } from "~/server/db";
 import { initTRPC, TRPCError } from "@trpc/server";
-import { getAuth } from "@clerk/nextjs/server";
+import { getAuth, OauthAccessToken } from "@clerk/nextjs/server";
 import { clerkClient } from "@clerk/nextjs";
+import axios from "axios";
 /**
  * 1. CONTEXT
  *
@@ -30,14 +31,14 @@ import { clerkClient } from "@clerk/nextjs";
  * @see https://trpc.io/docs/context
  */
 export const createTRPCContext = (opts: CreateNextContextOptions) => {
-  const { req } = opts;
-  const sesh = getAuth(req);
-  const userId = sesh.userId;
+	const { req } = opts;
+	const sesh = getAuth(req);
+	const userId = sesh.userId;
 
-  return {
-    prisma,
-    userId,
-  };
+	return {
+		prisma,
+		userId,
+	};
 };
 
 /**
@@ -49,17 +50,19 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
  */
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
-  transformer: superjson,
-  errorFormatter({ shape, error }) {
-    return {
-      ...shape,
-      data: {
-        ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
-      },
-    };
-  },
+	transformer: superjson,
+	errorFormatter({ shape, error }) {
+		return {
+			...shape,
+			data: {
+				...shape.data,
+				zodError:
+					error.cause instanceof ZodError
+						? error.cause.flatten()
+						: null,
+			},
+		};
+	},
 });
 
 /**
@@ -87,29 +90,50 @@ export const createTRPCMiddleware = t.middleware;
 export const publicProcedure = t.procedure;
 
 const isLoggedIn = createTRPCMiddleware(async (opts) => {
-  const ctx = opts.ctx;
-  if (!ctx.userId) throw new TRPCError({ code: "UNAUTHORIZED" });
+	const ctx = opts.ctx;
+	if (!ctx.userId) throw new TRPCError({ code: "UNAUTHORIZED" });
+	try {
+		const user = ctx.userId
+			? await clerkClient.users.getUser(ctx.userId)
+			: null;
+		if (!user) throw new TRPCError({ code: "UNAUTHORIZED" });
 
-  const user = ctx.userId ? await clerkClient.users.getUser(ctx.userId) : null;
-  if (!user) throw new TRPCError({ code: "UNAUTHORIZED" });
+		let discordId: string | undefined;
+		user.externalAccounts.forEach((account) => {
+			if (account.provider === "oauth_discord") {
+				discordId = account.externalId;
+			}
+		});
 
-  let discordId: string | undefined;
-  user.externalAccounts.forEach((account) => {
-    if (account.provider === "oauth_discord") {
-      discordId = account.externalId;
-    }
-  });
+		if (!discordId) throw new TRPCError({ code: "UNAUTHORIZED" });
 
-  if (!discordId) throw new TRPCError({ code: "UNAUTHORIZED" });
+		const token = await clerkClient.users.getUserOauthAccessToken(
+			user.id,
+			"oauth_discord"
+		);
 
-  const newCTX = {
-    ...ctx,
-    discordId,
-    user,
-  };
+		let discordToken: OauthAccessToken | undefined;
+		if (token) {
+			for (const t of token) {
+				if (t.provider === "oauth_discord" && !discordToken) {
+					discordToken = t;
+				}
+			}
+		}
 
-  return opts.next({
-    ctx: newCTX,
-  });
+		const newCTX = {
+			...ctx,
+			discordId,
+			user,
+			oauth: discordToken,
+		};
+
+		return opts.next({
+			ctx: newCTX,
+		});
+	} catch (err) {
+		console.log(err);
+		throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+	}
 });
 export const restrictedProcedure = publicProcedure.use(isLoggedIn);
