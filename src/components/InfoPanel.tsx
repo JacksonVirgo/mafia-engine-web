@@ -30,7 +30,7 @@ export default function InfoPanel({
 			</div>
 			<a
 				href={link}
-				className="mb-4 text-center text-sm underline hover:text-red-500"
+				className="mb-4 text-center text-xs underline hover:text-red-500 sm:text-sm"
 			>
 				{linkText}
 			</a>
