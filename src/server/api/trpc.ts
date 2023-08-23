@@ -11,7 +11,11 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import { prisma } from "~/server/db";
 import { initTRPC, TRPCError } from "@trpc/server";
-import { getAuth, type OauthAccessToken } from "@clerk/nextjs/server";
+import {
+	type ExternalAccount,
+	getAuth,
+	type OauthAccessToken,
+} from "@clerk/nextjs/server";
 import { clerkClient } from "@clerk/nextjs";
 /**
  * 1. CONTEXT
@@ -97,14 +101,20 @@ const isLoggedIn = createTRPCMiddleware(async (opts) => {
 			: null;
 		if (!user) throw new TRPCError({ code: "UNAUTHORIZED" });
 
-		let discordId: string | undefined;
+		let discordUser: ExternalAccount | undefined;
+
+		for (const account of user.externalAccounts) {
+			if (discordUser) break;
+			if (account.provider === "oauth_discord") discordUser = account;
+		}
+
 		user.externalAccounts.forEach((account) => {
 			if (account.provider === "oauth_discord") {
-				discordId = account.externalId;
+				discordUser = account;
 			}
 		});
 
-		if (!discordId) throw new TRPCError({ code: "UNAUTHORIZED" });
+		if (!discordUser) throw new TRPCError({ code: "UNAUTHORIZED" });
 
 		const token = await clerkClient.users.getUserOauthAccessToken(
 			user.id,
@@ -124,9 +134,10 @@ const isLoggedIn = createTRPCMiddleware(async (opts) => {
 
 		const newCTX = {
 			...ctx,
-			discordId,
 			user,
 			oauth: discordToken,
+			discordUser,
+			discordId: discordUser.externalId,
 		};
 
 		return opts.next({
