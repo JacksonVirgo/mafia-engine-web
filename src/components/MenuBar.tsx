@@ -16,6 +16,7 @@ export default function MenuBar() {
 		<div className="absolute left-0 top-0 flex w-full flex-row items-center justify-start border-b border-b-white bg-black bg-opacity-30 p-2 align-middle">
 			<MenuButton name="Home" path="/" />
 			<MenuButton name="Contact" path="/contact" />
+			<MenuButton name="Downloads" path="/downloads" />
 
 			{user.isSignedIn && router.pathname !== "/dashboard" && (
 				<MenuButton name="Dashboard" path="/dashboard" />
