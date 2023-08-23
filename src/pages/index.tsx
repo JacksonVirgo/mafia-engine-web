@@ -27,19 +27,19 @@ export default function Home() {
 				<div className="my-8 flex flex-row flex-wrap justify-center gap-4">
 					<InfoPanel
 						name="Wiki"
-						info="Our wiki has all the information you'd need to play games of Mafia. This includes basic roles, setups and articles"
+						info="Provides you with anything that is to know about Mafia. Roles, Mechanics, Guides, Anything."
 						link="https://discord-mafia-role-cards.fandom.com/wiki/Discord_Mafia_Role_cards_Wiki"
 						linkText="Visit our Wiki"
 					/>
 					<InfoPanel
 						name="Discord"
-						info="We play all of our games and our community is on this discord server. Join us for fun games of mafia with a dedicated playerbase"
+						info="We base our community on Discord. Join us to hang out and play some Mafia!"
 						link="https://discord.gg/social-deduction"
 						linkText="Join our Discord"
 					/>
 					<InfoPanel
 						name="YouTube"
-						info="We are about to roll out a YouTube channel with videos on how to play Mafia, how to host games and more."
+						info="Guides on playing and hosting Mafia, funny moments and other wacky stuff!"
 						link="https://www.youtube.com/@social-deduction"
 						linkText="Check out our YouTube"
 					/>
