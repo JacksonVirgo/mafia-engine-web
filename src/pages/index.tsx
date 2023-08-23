@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { AbsoluteCopyright } from "~/components/Copyright";
 import InfoPanel from "~/components/InfoPanel";
 import MenuBar from "~/components/MenuBar";
 
@@ -15,6 +16,8 @@ export default function Home() {
 				}}
 			>
 				<MenuBar />
+				<AbsoluteCopyright />
+
 				<h1 className="mb-2 mt-24 text-center text-6xl font-extrabold">
 					<span className="text-red-400">Mafia</span> Engine
 				</h1>

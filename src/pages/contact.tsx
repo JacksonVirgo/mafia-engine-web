@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { type FormEvent, useState } from "react";
+import { AbsoluteCopyright } from "~/components/Copyright";
 import MenuBar from "~/components/MenuBar";
 import Spinner from "~/components/Spinner";
 import { api } from "~/utils/api";
@@ -40,6 +41,7 @@ export default function Home() {
 				}}
 			>
 				<MenuBar />
+				<AbsoluteCopyright />
 				<h1 className="mb-2 mt-24 text-center text-6xl font-extrabold">
 					<span className="text-red-400">Contact</span> Form
 				</h1>

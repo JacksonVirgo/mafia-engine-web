@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { AbsoluteCopyright } from "~/components/Copyright";
 import MenuBar from "~/components/MenuBar";
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
 				}}
 			>
 				<MenuBar />
+				<AbsoluteCopyright />
 
 				<h1 className="mb-2 text-6xl font-extrabold">
 					<span className="text-red-400">Dash</span>board

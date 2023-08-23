@@ -1,6 +1,7 @@
 import { SignIn } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import Head from "next/head";
+import { AbsoluteCopyright } from "~/components/Copyright";
 import MenuBar from "~/components/MenuBar";
 
 export default function Home() {
@@ -16,6 +17,8 @@ export default function Home() {
 				}}
 			>
 				<MenuBar />
+				<AbsoluteCopyright />
+
 				<p>
 					<SignIn
 						appearance={{
