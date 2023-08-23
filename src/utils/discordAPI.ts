@@ -12,7 +12,7 @@ export type UserGuild = {
 
 export type UserGuilds = UserGuild[];
 
-function generateHeaders(authToken: string) {
+export function generateHeaders(authToken: string) {
 	return {
 		headers: {
 			Authorization: `Bearer ${authToken}`,
@@ -20,7 +20,7 @@ function generateHeaders(authToken: string) {
 	};
 }
 
-function getUrl(str: string) {
+export function getUrl(str: string) {
 	return `https://discord.com/api${str}`;
 }
 
