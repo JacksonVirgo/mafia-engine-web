@@ -5,17 +5,38 @@ import MenuBar from "~/components/MenuBar";
 import { api } from "~/utils/api";
 import React from "react";
 import { Spinner } from "@nextui-org/react";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import type { IconProp } from "@fortawesome/fontawesome-svg-core";
+import {
+	faPenToSquare,
+	faX,
+	faAnglesRight,
+	faAnglesLeft,
+	faAngleLeft,
+	faAngleRight,
+	faChevronDown,
+	faChevronUp,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
 	const [rowsPerPage] = useState(10);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
 
+	const [sort, setSort] = useState<"asc" | "desc" | undefined>(undefined);
+	const [sortBy, setSortBy] = useState<"id" | "username">("id");
+
+	const [nameSearch, setNameSearch] = useState<string | undefined>();
+	const [idSearch, setIDSearch] = useState<string | undefined>();
+
 	const userQuery = api.discord.users.useQuery({
 		skip: (currentPage - 1) * rowsPerPage,
 		take: rowsPerPage,
+		sortBy: sortBy,
+		sort: sort,
+		search: nameSearch,
+		idSearch: idSearch,
 	});
 
 	useEffect(() => {
@@ -36,7 +57,7 @@ export default function Home() {
 				<title>Mafia Engine - Dashboard</title>
 			</Head>
 			<main
-				className="flex h-smallview flex-col items-center justify-center bg-background bg-repeat text-white dark"
+				className="flex h-smallview flex-col items-center justify-start bg-background bg-repeat pt-32 text-white dark"
 				style={{
 					backgroundImage: "url(/chalkboard.jpg)",
 				}}
@@ -58,12 +79,66 @@ export default function Home() {
 					larger device.
 				</div>
 
+				<div className="mb-2 hidden w-4/5 sm:block">
+					<input
+						defaultValue={""}
+						onChange={(e) => {
+							setIDSearch(e.target.value);
+						}}
+						className={`w-64 rounded-lg bg-zinc-600 p-2`}
+						placeholder="Search by discord ID"
+					/>
+				</div>
+
+				<div className="mb-2 hidden w-4/5 sm:block">
+					<input
+						defaultValue={""}
+						onChange={(e) => {
+							setNameSearch(e.target.value);
+						}}
+						className="w-64 rounded-lg bg-zinc-600 p-2"
+						placeholder="Search by username"
+					/>
+				</div>
+
 				<table className="hidden w-4/5 table-fixed border-2 border-white p-4 text-center text-xs sm:table lg:text-base">
 					<thead>
 						<tr className="text-md bg-zinc-900">
-							<th className="p-2">ID</th>
-							<th>Username</th>
-							<th>MVP</th>
+							<Header
+								name="ID"
+								isFocused={sortBy == "id"}
+								sort={sort}
+								onClick={() => {
+									if (sortBy == "id") {
+										if (sort == "asc") setSort("desc");
+										else if (sort == "desc")
+											setSort(undefined);
+										else if (sort == undefined)
+											setSort("asc");
+									} else {
+										if (sort === undefined) setSort("asc");
+										setSortBy("id");
+									}
+								}}
+							/>
+							<Header
+								name="Username"
+								isFocused={sortBy == "username"}
+								sort={sort}
+								onClick={() => {
+									if (sortBy == "username") {
+										if (sort == "asc") setSort("desc");
+										else if (sort == "desc")
+											setSort(undefined);
+										else if (sort == undefined)
+											setSort("asc");
+									} else {
+										if (sort === undefined) setSort("asc");
+										setSortBy("username");
+									}
+								}}
+							/>
+							<Header name="MVP" />
 							<th></th>
 						</tr>
 					</thead>
@@ -81,11 +156,11 @@ export default function Home() {
 										<td>{user.mvpStatus}</td>
 										<td className="flex flex-row justify-center gap-2 p-2">
 											<FontAwesomeIcon
-												icon={"pen-to-square"}
+												icon={faPenToSquare}
 												className="hover:cursor-pointer"
 											/>
 											<FontAwesomeIcon
-												icon={"x"}
+												icon={faX}
 												className="text-red-500 hover:cursor-pointer"
 											/>
 										</td>
@@ -107,14 +182,14 @@ export default function Home() {
 
 				<div className="mt-2 hidden flex-row justify-center sm:flex">
 					<PaginationButton
-						icon={"angles-left"}
+						icon={faAnglesLeft}
 						isDisabled={currentPage === 1}
 						onClick={() => {
 							setCurrentPage(1);
 						}}
 					/>
 					<PaginationButton
-						icon={"angle-left"}
+						icon={faAngleLeft}
 						isDisabled={currentPage === 1}
 						onClick={() => {
 							setCurrentPage(Math.max(currentPage - 1, 1));
@@ -124,7 +199,7 @@ export default function Home() {
 						{currentPage}
 					</span>
 					<PaginationButton
-						icon={"angle-right"}
+						icon={faAngleRight}
 						isDisabled={currentPage === totalPages}
 						onClick={() => {
 							setCurrentPage(
@@ -133,7 +208,7 @@ export default function Home() {
 						}}
 					/>
 					<PaginationButton
-						icon={"angles-right"}
+						icon={faAnglesRight}
 						isDisabled={currentPage === totalPages}
 						onClick={() => {
 							setCurrentPage(totalPages);
@@ -145,8 +220,30 @@ export default function Home() {
 	);
 }
 
+type HeaderProps = {
+	onClick?: () => void;
+	name: string;
+	isFocused?: boolean;
+	sort?: "asc" | "desc";
+};
+function Header({ name, onClick, isFocused, sort }: HeaderProps) {
+	return (
+		<th
+			onClick={onClick}
+			className="hover:cursor-pointer hover:select-none"
+		>
+			<span>{name}</span>
+			{isFocused && sort && (
+				<FontAwesomeIcon
+					icon={sort == "desc" ? faChevronDown : faChevronUp}
+				/>
+			)}
+		</th>
+	);
+}
+
 type PaginationButtonProps = {
-	icon: IconProp;
+	icon: IconDefinition;
 	onClick?: () => void;
 	isDisabled?: boolean;
 };
@@ -156,15 +253,15 @@ function PaginationButton({
 	isDisabled,
 }: PaginationButtonProps) {
 	return (
-		<span
+		<div
 			className={`flex aspect-square h-full flex-col justify-center rounded-full bg-red-400 bg-opacity-0 text-center transition-all duration-75 hover:select-none ${"hover:cursor-pointer hover:bg-opacity-25"}`}
 			onClick={onClick}
 		>
 			<FontAwesomeIcon
 				icon={icon}
 				size="2x"
-				className={isDisabled ? "text-zinc-500" : ""}
+				className={isDisabled ? "text-zinc-500" : "text-white"}
 			/>
-		</span>
+		</div>
 	);
 }
