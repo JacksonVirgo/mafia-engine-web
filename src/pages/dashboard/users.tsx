@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 import React from "react";
 import { Spinner } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 export default function Home() {
 	const [rowsPerPage] = useState(10);
@@ -105,46 +106,65 @@ export default function Home() {
 				</table>
 
 				<div className="mt-2 hidden flex-row justify-center sm:flex">
-					<span
-						className="flex aspect-square h-full flex-col justify-center rounded-full bg-red-400 bg-opacity-0 text-center transition-all duration-75 hover:cursor-pointer hover:select-none hover:bg-opacity-25"
+					<PaginationButton
+						icon={"angles-left"}
+						isDisabled={currentPage === 1}
 						onClick={() => {
 							setCurrentPage(1);
 						}}
-					>
-						<FontAwesomeIcon icon={"angles-left"} size="2x" />
-					</span>
-					<span
-						className="flex aspect-square h-full flex-col justify-center rounded-full bg-red-400 bg-opacity-0 text-center transition-all duration-75 hover:cursor-pointer hover:select-none hover:bg-opacity-25"
+					/>
+					<PaginationButton
+						icon={"angle-left"}
+						isDisabled={currentPage === 1}
 						onClick={() => {
 							setCurrentPage(Math.max(currentPage - 1, 1));
 						}}
-					>
-						<FontAwesomeIcon icon={"angle-left"} size="2x" />
-					</span>
+					/>
 					<span className="flex aspect-square h-full flex-col justify-center rounded-2xl bg-zinc-500 p-2 text-center">
 						{currentPage}
 					</span>
-
-					<span
-						className="flex aspect-square h-full flex-col justify-center rounded-full bg-red-400 bg-opacity-0 text-center transition-all duration-75 hover:cursor-pointer hover:select-none hover:bg-opacity-25"
+					<PaginationButton
+						icon={"angle-right"}
+						isDisabled={currentPage === totalPages}
 						onClick={() => {
 							setCurrentPage(
 								Math.min(currentPage + 1, totalPages)
 							);
 						}}
-					>
-						<FontAwesomeIcon icon={"angle-right"} size="2x" />
-					</span>
-					<span
-						className="flex aspect-square h-full flex-col justify-center rounded-full bg-red-400 bg-opacity-0 text-center transition-all duration-75 hover:cursor-pointer hover:select-none hover:bg-opacity-25"
+					/>
+					<PaginationButton
+						icon={"angles-right"}
+						isDisabled={currentPage === totalPages}
 						onClick={() => {
 							setCurrentPage(totalPages);
 						}}
-					>
-						<FontAwesomeIcon icon={"angles-right"} size="2x" />
-					</span>
+					/>
 				</div>
 			</main>
 		</>
+	);
+}
+
+type PaginationButtonProps = {
+	icon: IconProp;
+	onClick?: () => void;
+	isDisabled?: boolean;
+};
+function PaginationButton({
+	icon,
+	onClick,
+	isDisabled,
+}: PaginationButtonProps) {
+	return (
+		<span
+			className={`flex aspect-square h-full flex-col justify-center rounded-full bg-red-400 bg-opacity-0 text-center transition-all duration-75 hover:select-none ${"hover:cursor-pointer hover:bg-opacity-25"}`}
+			onClick={onClick}
+		>
+			<FontAwesomeIcon
+				icon={icon}
+				size="2x"
+				className={isDisabled ? "text-zinc-500" : ""}
+			/>
+		</span>
 	);
 }
