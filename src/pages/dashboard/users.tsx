@@ -138,9 +138,7 @@ export default function Home() {
 					<span
 						className="flex aspect-square h-full flex-col justify-center rounded-full bg-red-400 bg-opacity-0 text-center transition-all duration-75 hover:cursor-pointer hover:select-none hover:bg-opacity-25"
 						onClick={() => {
-							setCurrentPage(
-								Math.min(currentPage + 1, totalPages)
-							);
+							setCurrentPage(totalPages);
 						}}
 					>
 						<FontAwesomeIcon icon={"angles-right"} size="2x" />
