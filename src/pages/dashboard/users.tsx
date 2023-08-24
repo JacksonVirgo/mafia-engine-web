@@ -4,7 +4,7 @@ import { AbsoluteCopyright } from "~/components/Copyright";
 import MenuBar from "~/components/MenuBar";
 import { api } from "~/utils/api";
 import React from "react";
-import { Button, Spinner } from "@nextui-org/react";
+import { Spinner } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Home() {
@@ -105,23 +105,46 @@ export default function Home() {
 				</table>
 
 				<div className="mt-2 hidden flex-row justify-center sm:flex">
-					<Button
+					<span
+						className="flex aspect-square h-full flex-col justify-center rounded-full bg-red-400 bg-opacity-0 text-center transition-all duration-75 hover:cursor-pointer hover:select-none hover:bg-opacity-25"
+						onClick={() => {
+							setCurrentPage(1);
+						}}
+					>
+						<FontAwesomeIcon icon={"angles-left"} size="2x" />
+					</span>
+					<span
+						className="flex aspect-square h-full flex-col justify-center rounded-full bg-red-400 bg-opacity-0 text-center transition-all duration-75 hover:cursor-pointer hover:select-none hover:bg-opacity-25"
 						onClick={() => {
 							setCurrentPage(Math.max(currentPage - 1, 1));
 						}}
 					>
-						Prev
-					</Button>
-					<span className="bg-zinc-500 p-2">{currentPage}</span>
-					<Button
+						<FontAwesomeIcon icon={"angle-left"} size="2x" />
+					</span>
+					<span className="flex aspect-square h-full flex-col justify-center rounded-2xl bg-zinc-500 p-2 text-center">
+						{currentPage}
+					</span>
+
+					<span
+						className="flex aspect-square h-full flex-col justify-center rounded-full bg-red-400 bg-opacity-0 text-center transition-all duration-75 hover:cursor-pointer hover:select-none hover:bg-opacity-25"
 						onClick={() => {
 							setCurrentPage(
 								Math.min(currentPage + 1, totalPages)
 							);
 						}}
 					>
-						Next
-					</Button>
+						<FontAwesomeIcon icon={"angle-right"} size="2x" />
+					</span>
+					<span
+						className="flex aspect-square h-full flex-col justify-center rounded-full bg-red-400 bg-opacity-0 text-center transition-all duration-75 hover:cursor-pointer hover:select-none hover:bg-opacity-25"
+						onClick={() => {
+							setCurrentPage(
+								Math.min(currentPage + 1, totalPages)
+							);
+						}}
+					>
+						<FontAwesomeIcon icon={"angles-right"} size="2x" />
+					</span>
 				</div>
 			</main>
 		</>

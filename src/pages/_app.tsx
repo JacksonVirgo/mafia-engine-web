@@ -11,6 +11,10 @@ import {
 	faEllipsisVertical,
 	faPenToSquare,
 	faX,
+	faAngleLeft,
+	faAnglesLeft,
+	faAngleRight,
+	faAnglesRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { NextUIProvider } from "@nextui-org/react";
 
@@ -23,6 +27,8 @@ library.add(
 	faPenToSquare,
 	faX
 );
+
+library.add(faAngleLeft, faAnglesLeft, faAngleRight, faAnglesRight);
 
 const MyApp: AppType = ({ Component, pageProps }) => {
 	return (
