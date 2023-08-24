@@ -16,6 +16,9 @@ export default {
 			animation: {
 				grow: "spin 3s linear infinite",
 			},
+			height: {
+				smallview: "100svh",
+			},
 		},
 	},
 	plugins: [],

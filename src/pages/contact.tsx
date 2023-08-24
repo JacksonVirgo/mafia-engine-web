@@ -35,17 +35,17 @@ export default function Home() {
 				<title>Mafia Engine - Contact</title>
 			</Head>
 			<main
-				className="flex h-screen flex-col items-center justify-center bg-repeat pb-16 text-white"
+				className="flex h-smallview flex-col items-center justify-center bg-repeat pb-16 text-white"
 				style={{
 					backgroundImage: "url(/chalkboard.jpg)",
 				}}
 			>
-				<MenuBar />
 				<AbsoluteCopyright />
+				<MenuBar />
+
 				<h1 className="mb-2 mt-24 text-center text-6xl font-extrabold">
 					<span className="text-red-400">Contact</span> Form
 				</h1>
-
 				{isLoading && responded == "" && <Spinner />}
 				{responded != "" && <div>{responded}</div>}
 				{!responded && !isLoading && (
@@ -53,7 +53,7 @@ export default function Home() {
 						onSubmit={(e) => {
 							formSubmission(e).catch(console.log);
 						}}
-						className="flex w-96 flex-col text-lg "
+						className="flex w-2/3 flex-col text-lg sm:w-96 "
 					>
 						<label htmlFor="subject">Subject</label>
 						<input
@@ -72,7 +72,7 @@ export default function Home() {
 							maxLength={1024}
 							required
 							onChange={(e) => setMessage(e.target.value)}
-							className="h-96 resize-none rounded-md border border-zinc-300 bg-black bg-opacity-25 p-2 text-sm outline-none"
+							className="h-32 resize-none rounded-md border border-zinc-300 bg-black bg-opacity-25 p-2 text-sm outline-none sm:h-96"
 						/>
 						<div className="mt-2 flex w-full flex-row justify-center">
 							<button

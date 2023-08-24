@@ -10,21 +10,21 @@ export default function Home() {
 				<title>Mafia Engine</title>
 			</Head>
 			<main
-				className="flex h-full min-h-screen flex-col items-center justify-center bg-repeat text-white"
+				className="flex h-smallview w-auto flex-col items-center justify-center bg-repeat text-white"
 				style={{
 					backgroundImage: "url(/chalkboard.jpg)",
 				}}
 			>
-				<MenuBar />
 				<AbsoluteCopyright />
+				<MenuBar />
 
-				<h1 className="mb-2 mt-24 text-center text-6xl font-extrabold">
+				<h1 className="mb-2 text-center text-6xl font-extrabold sm:mt-24">
 					<span className="text-red-400">Mafia</span> Engine
 				</h1>
 				<p className="px-4 text-center text-lg">
 					Discord bot for a community of dedicated players of Mafia.
 				</p>
-				<div className="my-8 flex flex-row flex-wrap justify-center gap-4">
+				<div className="mx-2 my-8 flex flex-row flex-wrap justify-center gap-4 sm:mx-0">
 					<InfoPanel
 						name="Wiki"
 						info="Provides you with anything that is to know about Mafia. Roles, Mechanics, Guides, Anything."
@@ -44,7 +44,7 @@ export default function Home() {
 						linkText="Check out our YouTube"
 					/>
 				</div>
-				<div className="mb-16 w-48 text-center">
+				<div className="mb-16 hidden w-48 text-center sm:block">
 					<JoinDiscordButton />
 				</div>
 			</main>

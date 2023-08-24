@@ -17,20 +17,22 @@ export default function InfoPanel({
 
 	return (
 		<div
-			className={`flex aspect-square h-44 flex-col overflow-hidden rounded-md border border-zinc-300 transition-all hover:cursor-pointer sm:h-60 sm:hover:scale-110`}
+			className={`flex w-44 flex-col overflow-hidden rounded-md border border-zinc-300 transition-all hover:cursor-pointer sm:aspect-square sm:w-56 sm:hover:scale-110`}
 			onClick={onClick}
 		>
-			<div className="flex flex-row items-center gap-2 bg-zinc-800 p-2 pl-4  align-middle">
-				<span className="text-md sm:text-lg">{name}</span>
+			<div className="flex flex-row items-center gap-2 bg-zinc-800 p-2 pl-4 align-middle ">
+				<span className="text-md w-full text-center sm:text-center sm:text-lg">
+					{name}
+				</span>
 			</div>
-			<div className="grow">
+			<div className="hidden grow sm:block">
 				<div className="mx-3 mt-3 text-xs sm:mx-6 sm:mt-6 sm:text-sm">
 					{info}
 				</div>
 			</div>
 			<a
 				href={link}
-				className="mb-4 text-center text-xs underline hover:text-red-500 sm:text-sm"
+				className="mb-4 hidden text-center text-xs underline hover:text-red-500 sm:block sm:text-sm"
 			>
 				{linkText}
 			</a>

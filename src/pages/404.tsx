@@ -9,7 +9,7 @@ export default function NotFound() {
 				<title>Mafia Engine - Unknown Page</title>
 			</Head>
 			<main
-				className="flex h-screen flex-col items-center justify-center bg-repeat text-white"
+				className="flex h-smallview flex-col items-center justify-center bg-repeat text-white"
 				style={{
 					backgroundImage: "url(/chalkboard.jpg)",
 				}}

@@ -32,6 +32,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
+    "styled-components": "^6.0.7",
     "superjson": "^1.13.1",
     "uploadthing": "^5.3.3",
     "zod": "^3.21.4"

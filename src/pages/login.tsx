@@ -11,7 +11,7 @@ export default function Home() {
 				<title>Mafia Engine - Login</title>
 			</Head>
 			<main
-				className="flex h-screen flex-col items-center justify-center bg-repeat text-white"
+				className="flex h-smallview flex-col items-center justify-center bg-repeat text-white"
 				style={{
 					backgroundImage: "url(/chalkboard.jpg)",
 				}}

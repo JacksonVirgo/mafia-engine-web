@@ -3,9 +3,10 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faHouse, fas } from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
-library.add(fas, faHouse, faDiscord);
+import { fas, faCircleXmark, faBars } from "@fortawesome/free-solid-svg-icons";
+
+library.add(fas, faDiscord, faCircleXmark, faBars);
 
 const MyApp: AppType = ({ Component, pageProps }) => {
 	return (
