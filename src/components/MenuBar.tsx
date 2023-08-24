@@ -22,6 +22,7 @@ export default function MenuBar() {
 		<>
 			<div className="absolute left-0 top-0 hidden w-full flex-row items-center justify-start border-b border-b-white bg-black bg-opacity-30 p-2 align-middle sm:flex">
 				<MenuButton name="Home" path="/" />
+				{/* <MenuButton name="Gameplay" path="/gameplay" /> */}
 				<MenuButton name="Contact" path="/contact" />
 				<MenuButton name="Downloads" path="/downloads" />
 
@@ -115,6 +116,7 @@ function MenuBarPage({ pageActive, onExit }: MenuBarPageProps) {
 			</div>
 
 			<MenuButton name="Home" path="/" menuPage={true} />
+			{/* <MenuButton name="Gameplay" path="/gameplay" menuPage={true} /> */}
 			<MenuButton name="Contact" path="/contact" menuPage={true} />
 			<MenuButton name="Downloads" path="/downloads" menuPage={true} />
 
@@ -124,7 +126,7 @@ function MenuBarPage({ pageActive, onExit }: MenuBarPageProps) {
 						name="Dashboard"
 						path="/dashboard"
 						menuPage={true}
-					/>{" "}
+					/>
 				</>
 			)}
 
