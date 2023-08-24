@@ -1,7 +1,11 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
+
 type InfoPanelProps = {
 	name: string;
 	info: string;
-	link: string;
+	link?: string;
+	internalLink?: string;
 	linkText: string;
 };
 
@@ -10,9 +14,13 @@ export default function InfoPanel({
 	info,
 	link,
 	linkText,
+	internalLink,
 }: InfoPanelProps) {
+	const router = useRouter();
+
 	const onClick = () => {
-		window.open(link);
+		if (link) window.open(link);
+		else if (internalLink) router.push(internalLink).catch(console.log);
 	};
 
 	return (
@@ -30,12 +38,22 @@ export default function InfoPanel({
 					{info}
 				</div>
 			</div>
-			<a
-				href={link}
-				className="mb-4 hidden text-center text-xs underline hover:text-red-500 sm:block sm:text-sm"
-			>
-				{linkText}
-			</a>
+			{link && (
+				<a
+					href={link}
+					className="mb-4 hidden text-center text-xs underline hover:text-red-500 sm:block sm:text-sm"
+				>
+					{linkText}
+				</a>
+			)}
+
+			{internalLink && (
+				<Link href={internalLink}>
+					<span className="mb-4 hidden text-center text-xs underline hover:text-red-500 sm:block sm:text-sm">
+						{linkText}
+					</span>
+				</Link>
+			)}
 		</div>
 	);
 }

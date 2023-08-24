@@ -4,16 +4,34 @@ import "~/styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
-import { fas, faCircleXmark, faBars } from "@fortawesome/free-solid-svg-icons";
+import {
+	fas,
+	faCircleXmark,
+	faBars,
+	faEllipsisVertical,
+	faPenToSquare,
+	faX,
+} from "@fortawesome/free-solid-svg-icons";
+import { NextUIProvider } from "@nextui-org/react";
 
-library.add(fas, faDiscord, faCircleXmark, faBars);
+library.add(
+	fas,
+	faDiscord,
+	faCircleXmark,
+	faBars,
+	faEllipsisVertical,
+	faPenToSquare,
+	faX
+);
 
 const MyApp: AppType = ({ Component, pageProps }) => {
 	return (
 		<ClerkProvider
 			publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
 		>
-			<Component {...pageProps} />
+			<NextUIProvider>
+				<Component {...pageProps} />
+			</NextUIProvider>
 		</ClerkProvider>
 	);
 };

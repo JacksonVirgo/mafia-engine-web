@@ -60,4 +60,36 @@ export const discordRouter = createTRPCRouter({
 			};
 		}
 	),
+
+	userCount: restrictedProcedure.query(async ({ ctx: { prisma } }) => {
+		const count = await prisma.user.count();
+
+		return {
+			count,
+		};
+	}),
+
+	users: restrictedProcedure
+		.input(
+			z.object({
+				take: z.number().default(10),
+				skip: z.number().default(0),
+			})
+		)
+		.query(async ({ ctx: { prisma }, input }) => {
+			const users = await prisma.user.findMany({
+				orderBy: {
+					id: "asc",
+				},
+				take: input.take,
+				skip: input.skip,
+			});
+
+			const totalUsers = await prisma.user.count();
+
+			return {
+				users,
+				count: totalUsers,
+			};
+		}),
 });

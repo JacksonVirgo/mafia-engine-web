@@ -1,9 +1,16 @@
 import { authMiddleware } from "@clerk/nextjs";
 
+const PUBLIC_ROUTES: Array<string> = [
+	"/",
+	"/login",
+	"/about",
+	"/downloads",
+	"/gameplay",
+];
+
 export default authMiddleware({
-	publicRoutes: ["/", "/login", "/about", "/downloads", "/gameplay"],
+	publicRoutes: PUBLIC_ROUTES,
 	signInUrl: "/login",
-	// afterAuth: () => {},
 	// beforeAuth: () => {},
 	// debug: true
 });

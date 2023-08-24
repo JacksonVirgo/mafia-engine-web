@@ -56,11 +56,14 @@ export async function getPermissionsInGuild(
 		if (typeof data.permissions != "number") return null;
 
 		const permissions = {
+			status: 200,
 			isAdministrator: (data.permissions & 0x8) === 0x8,
 		};
 
 		return permissions;
 	} catch (err) {
+		console.log(err);
+		console.log("error");
 		return null;
 	}
 }

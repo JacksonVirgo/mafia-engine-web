@@ -45,18 +45,18 @@ export default function Home() {
 					/>
 				</div>
 				<div className="mb-16 hidden w-48 text-center sm:block">
-					<JoinDiscordButton />
+					<JoinWaitlist />
 				</div>
 			</main>
 		</>
 	);
 }
 
-export function JoinDiscordButton() {
+export function JoinWaitlist() {
 	return (
 		<a href="https://discord.gg/social-deduction" rel="noopener noreferrer">
 			<div className="rounded-full border border-white bg-opacity-100 p-2 px-4 text-center hover:bg-red-500 hover:bg-opacity-20 hover:underline">
-				<span>Join the Discord</span>
+				<span>Join the Waitlist</span>
 			</div>
 		</a>
 	);

@@ -148,4 +148,5 @@ const isLoggedIn = createTRPCMiddleware(async (opts) => {
 		throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
 	}
 });
+
 export const restrictedProcedure = publicProcedure.use(isLoggedIn);
