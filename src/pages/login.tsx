@@ -1,10 +1,20 @@
-import { SignIn } from "@clerk/nextjs";
+import { SignIn, useUser } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import Head from "next/head";
 import { AbsoluteCopyright } from "~/components/Copyright";
 import MenuBar from "~/components/MenuBar";
+import { Loading } from "~/components/subpages/Loading";
 
 export default function Home() {
+	const user = useUser();
+
+	if (!user.isLoaded) {
+		return <Loading />;
+	}
+
+	if (user.isSignedIn) {
+		return <div>What</div>;
+	}
 	return (
 		<>
 			<Head>

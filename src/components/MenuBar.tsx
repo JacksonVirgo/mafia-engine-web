@@ -7,20 +7,22 @@ import { useState } from "react";
 
 import HotdogMenuButton from "./navigation/HotdogMenu";
 
-export default function MenuBar() {
+type MenuBarProps = {
+	attached?: boolean;
+};
+export default function MenuBar({ attached }: MenuBarProps) {
 	const user = useUser();
 	const router = useRouter();
 
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-	// TODO:
-	// Remove HOME when at HOME
-	// Add LOGIN when not logged in
-	// Add DASHBOARD when logged in and not at DASHBOARD
-
 	return (
 		<>
-			<div className="absolute left-0 top-0 hidden w-full flex-row items-center justify-start border-b border-b-white bg-black bg-opacity-30 p-2 align-middle sm:flex">
+			<div
+				className={`hidden w-full flex-row items-center justify-start border-b border-b-white bg-black bg-opacity-30 p-2 align-middle sm:flex ${
+					attached ? "" : "absolute left-0 top-0"
+				}`}
+			>
 				<MenuButton name="Home" path="/" />
 				{/* <MenuButton name="Gameplay" path="/gameplay" /> */}
 				<MenuButton name="Contact" path="/contact" />

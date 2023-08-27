@@ -1,17 +1,20 @@
+import { useUser } from "@clerk/nextjs";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { AbsoluteCopyright } from "~/components/Copyright";
 import InfoPanel from "~/components/InfoPanel";
 import MenuBar from "~/components/MenuBar";
 import { Loading } from "~/components/subpages/Loading";
 
-import { api } from "~/utils/api";
 export default function Home() {
-	const perms = api.discord.validatePermissions.useQuery({
-		guildId: "648663810772697089",
-	});
+	const user = useUser();
+	const router = useRouter();
 
-	if (perms.isLoading) return <Loading />;
-	else if (perms.data?.isAdministrator == false) return <p>Not admin</p>;
+	if (user.isLoaded && !user.isSignedIn) {
+		router.push("/login").catch(() => console.log("oop"));
+	} else if (!user.isLoaded) {
+		return <Loading />;
+	}
 
 	return (
 		<>
