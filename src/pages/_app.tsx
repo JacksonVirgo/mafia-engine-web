@@ -1,45 +1,31 @@
-import { type AppType } from "next/app";
+import { type AppProps } from "next/app";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faDiscord } from "@fortawesome/free-brands-svg-icons";
-import {
-	fas,
-	faCircleXmark,
-	faBars,
-	faEllipsisVertical,
-	faPenToSquare,
-	faX,
-	faAngleLeft,
-	faAnglesLeft,
-	faAngleRight,
-	faAnglesRight,
-} from "@fortawesome/free-solid-svg-icons";
 import { NextUIProvider } from "@nextui-org/react";
+import { SessionProvider } from "next-auth/react";
+import loadFontAwesome from "~/utils/fontAwesome";
+import type { Session } from "next-auth";
+import { ClerkProvider } from "@clerk/nextjs";
 
-library.add(
-	fas,
-	faDiscord,
-	faCircleXmark,
-	faBars,
-	faEllipsisVertical,
-	faPenToSquare,
-	faX
-);
+loadFontAwesome();
 
-library.add(faAngleLeft, faAnglesLeft, faAngleRight, faAnglesRight);
-
-const MyApp: AppType = ({ Component, pageProps }) => {
+function MyApp({
+	Component,
+	pageProps,
+}: AppProps<{
+	session: Session;
+}>) {
 	return (
 		<ClerkProvider
 			publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
 		>
-			<NextUIProvider>
-				<Component {...pageProps} />
-			</NextUIProvider>
+			<SessionProvider session={pageProps.session}>
+				<NextUIProvider>
+					<Component {...pageProps} />
+				</NextUIProvider>
+			</SessionProvider>
 		</ClerkProvider>
 	);
-};
+}
 
 export default api.withTRPC(MyApp);

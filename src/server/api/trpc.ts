@@ -149,4 +149,72 @@ const isLoggedIn = createTRPCMiddleware(async (opts) => {
 	}
 });
 
+const isAdmin = createTRPCMiddleware(async (opts) => {
+	const ctx = opts.ctx;
+	if (!ctx.userId) throw new TRPCError({ code: "UNAUTHORIZED" });
+	try {
+		const user = ctx.userId
+			? await clerkClient.users.getUser(ctx.userId)
+			: null;
+		if (!user) throw new TRPCError({ code: "UNAUTHORIZED" });
+
+		let discordUser: ExternalAccount | undefined;
+
+		for (const account of user.externalAccounts) {
+			if (discordUser) break;
+			if (account.provider === "oauth_discord") discordUser = account;
+		}
+
+		user.externalAccounts.forEach((account) => {
+			if (account.provider === "oauth_discord") {
+				discordUser = account;
+			}
+		});
+
+		if (!discordUser) throw new TRPCError({ code: "UNAUTHORIZED" });
+
+		const token = await clerkClient.users.getUserOauthAccessToken(
+			user.id,
+			"oauth_discord"
+		);
+
+		let discordToken: OauthAccessToken | undefined;
+		if (token) {
+			for (const t of token) {
+				if (t.provider === "oauth_discord" && !discordToken) {
+					discordToken = t;
+				}
+			}
+		}
+
+		if (!discordToken) throw new TRPCError({ code: "UNAUTHORIZED" });
+
+		const data = await prisma.user.findUnique({
+			where: {
+				discordId: discordUser.externalId,
+			},
+		});
+		if (!data) throw new TRPCError({ code: "UNAUTHORIZED" });
+
+		if (data.permission !== "Admin")
+			throw new TRPCError({ code: "UNAUTHORIZED" });
+
+		const newCTX = {
+			...ctx,
+			user,
+			oauth: discordToken,
+			discordUser,
+			discordId: discordUser.externalId,
+		};
+
+		return opts.next({
+			ctx: newCTX,
+		});
+	} catch (err) {
+		console.log(err);
+		throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+	}
+});
+
 export const restrictedProcedure = publicProcedure.use(isLoggedIn);
+export const adminProcedure = publicProcedure.use(isAdmin);
