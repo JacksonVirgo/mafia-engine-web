@@ -13,7 +13,7 @@ type Routes = {
 };
 
 const ROUTES: Routes = {
-	Admin: ["/dashboard/users", "/dashboard/archives"],
+	Admin: ["/dashboard/users", "/dashboard/archives", "/dashboard/roles"],
 	Moderator: [],
 	Host: [],
 	User: ["/dashboard"],
@@ -91,7 +91,7 @@ export default authMiddleware({
 
 		try {
 			const val = await fetch(
-				`http://localhost:3000/api/auth?id=${discordAccount.externalId}`
+				`${baseRoute.href}/api/auth?id=${discordAccount.externalId}`
 			);
 
 			switch (val.status) {

@@ -4,7 +4,7 @@ import { discordRouter } from "./routers/discord";
 import { z } from "zod";
 import axios from "axios";
 import { TRPCError } from "@trpc/server";
-
+import { roleRouter } from "./routers/roles";
 /**
  * This is the primary router for your server.
  *
@@ -13,6 +13,7 @@ import { TRPCError } from "@trpc/server";
 export const appRouter = createTRPCRouter({
 	auth: authRouter,
 	discord: discordRouter,
+	roles: roleRouter,
 
 	contact: restrictedProcedure
 		.input(
