@@ -6,7 +6,7 @@ env:
     DATABASE_URL: "https://example.com"
     CLERK_SECRET_KEY: "secret"
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "public"
-    AUTH_DISCORD_CLIENT_ID: "client_id"
+    OAUTH_DISCORD_CLIENT_ID: "client_id"
     OAUTH_DISCORD_SECRET: "secret"
 
 jobs:
