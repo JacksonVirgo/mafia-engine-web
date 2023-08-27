@@ -35,10 +35,17 @@ export default function Home() {
 				</h1>
 				<div className="mx-2 my-8 flex flex-row flex-wrap justify-center gap-4 sm:mx-0">
 					<InfoPanel
-						name="User List"
+						name="Users"
 						info="View data about all stored users. You will be able to assign alt accounts, and change usernames etc."
 						internalLink="/dashboard/users"
 						linkText="Manage Users"
+					/>
+
+					<InfoPanel
+						name="Archives"
+						info="View data about all stored archives. You will be able to create new archives and edit old ones"
+						internalLink="/dashboard/archives"
+						linkText="Manage Archives"
 					/>
 				</div>
 			</main>

@@ -13,7 +13,7 @@ type Routes = {
 };
 
 const ROUTES: Routes = {
-	Admin: ["/dashboard/users"],
+	Admin: ["/dashboard/users", "/dashboard/archives"],
 	Moderator: [],
 	Host: [],
 	User: ["/dashboard"],
@@ -98,6 +98,7 @@ export default authMiddleware({
 				case 400:
 				case 404:
 					return NextResponse.redirect(loginRoute);
+					break;
 				case 200:
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 					const json = await val.json();
@@ -125,10 +126,16 @@ export default authMiddleware({
 						// To be safe, redirect to dashboard.
 						return NextResponse.redirect(dashboardRoute);
 					}
+					break;
 				default:
+					console.log(
+						"Unknown status response in middleware:",
+						val.status
+					);
 					return NextResponse.redirect(baseRoute);
 			}
 		} catch (err) {
+			console.log(err);
 			return NextResponse.redirect(baseRoute);
 		}
 	},

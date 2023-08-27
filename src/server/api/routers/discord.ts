@@ -76,4 +76,26 @@ export const discordRouter = createTRPCRouter({
 				count: totalUsers,
 			};
 		}),
+
+	archives: restrictedProcedure
+		.input(
+			z.object({
+				take: z.number().default(10),
+				skip: z.number().default(0),
+			})
+		)
+		.query(async ({ ctx: { prisma }, input }) => {
+			const archives = await prisma.archivedGame.findMany({
+				where: {},
+				take: input.take,
+				skip: input.skip,
+			});
+
+			const totalArchives = await prisma.archivedGame.count();
+
+			return {
+				archives,
+				count: totalArchives,
+			};
+		}),
 });

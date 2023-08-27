@@ -24,37 +24,27 @@ export default function Home() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
 
-	const [sort, setSort] = useState<"asc" | "desc" | undefined>(undefined);
-	const [sortBy, setSortBy] = useState<"id" | "username">("id");
-
-	const [nameSearch, setNameSearch] = useState<string | undefined>();
-	const [idSearch, setIDSearch] = useState<string | undefined>();
-
-	const userQuery = api.discord.users.useQuery({
+	const archiveQuery = api.discord.archives.useQuery({
 		skip: (currentPage - 1) * rowsPerPage,
 		take: rowsPerPage,
-		sortBy: sortBy,
-		sort: sort,
-		search: nameSearch,
-		idSearch: idSearch,
 	});
 
 	useEffect(() => {
-		userQuery
+		archiveQuery
 			.refetch()
 			.then((data) => {
-				const userCount = data.data?.count;
-				if (userCount && userCount > 0)
-					setTotalPages(Math.ceil(userCount / rowsPerPage));
+				const archiveCount = data.data?.count;
+				if (archiveCount && archiveCount > 0)
+					setTotalPages(Math.ceil(archiveCount / rowsPerPage));
 				if (currentPage > totalPages) setCurrentPage(totalPages);
 			})
 			.catch(console.log);
-	}, [rowsPerPage, currentPage, totalPages, userQuery]);
+	}, [rowsPerPage, currentPage, totalPages, archiveQuery]);
 
 	return (
 		<>
 			<Head>
-				<title>Mafia Engine - Dashboard</title>
+				<title>Mafia Engine - Archives</title>
 			</Head>
 			<main
 				className="flex h-smallview flex-col items-center justify-start bg-background bg-repeat pt-32 text-white dark"
@@ -66,12 +56,10 @@ export default function Home() {
 				<AbsoluteCopyright />
 
 				<h1 className="mb-2 text-6xl font-extrabold">
-					<span className="text-red-400">User</span> List
+					<span className="text-red-400">Archive</span> List
 				</h1>
 				<p className="mb-16 text-center">
 					This tool is in very early development.
-					<br />
-					All this data is READ ONLY
 				</p>
 
 				<div className="block p-6 text-center sm:hidden">
@@ -79,81 +67,30 @@ export default function Home() {
 					larger device.
 				</div>
 
-				<div className="mb-2 hidden w-4/5 sm:block">
-					<input
-						defaultValue={""}
-						onChange={(e) => {
-							setIDSearch(e.target.value);
-						}}
-						className={`w-64 rounded-lg bg-zinc-600 p-2`}
-						placeholder="Search by discord ID"
-					/>
-				</div>
-
-				<div className="mb-2 hidden w-4/5 sm:block">
-					<input
-						defaultValue={""}
-						onChange={(e) => {
-							setNameSearch(e.target.value);
-						}}
-						className="w-64 rounded-lg bg-zinc-600 p-2"
-						placeholder="Search by username"
-					/>
-				</div>
-
 				<table className="hidden w-4/5 table-fixed border-2 border-white p-4 text-center text-xs sm:table lg:text-base">
 					<thead>
 						<tr className="text-md bg-zinc-900">
-							<Header
-								name="ID"
-								isFocused={sortBy == "id"}
-								sort={sort}
-								onClick={() => {
-									if (sortBy == "id") {
-										if (sort == "asc") setSort("desc");
-										else if (sort == "desc")
-											setSort(undefined);
-										else if (sort == undefined)
-											setSort("asc");
-									} else {
-										if (sort === undefined) setSort("asc");
-										setSortBy("id");
-									}
-								}}
-							/>
-							<Header
-								name="Username"
-								isFocused={sortBy == "username"}
-								sort={sort}
-								onClick={() => {
-									if (sortBy == "username") {
-										if (sort == "asc") setSort("desc");
-										else if (sort == "desc")
-											setSort(undefined);
-										else if (sort == undefined)
-											setSort("asc");
-									} else {
-										if (sort === undefined) setSort("asc");
-										setSortBy("username");
-									}
-								}}
-							/>
-							<Header name="MVP" />
+							<Header name="Handle" />
+							<Header name="Name" />
+							<Header name="Spreadsheet" />
 							<th></th>
 						</tr>
 					</thead>
 					<tbody>
-						{userQuery.data ? (
-							userQuery.data.users.map((user, index) => {
+						{archiveQuery.data ? (
+							archiveQuery.data.archives.map((archive, index) => {
 								const color =
 									index % 2 == 0
 										? "bg-zinc-500"
 										: "bg-zinc-600";
 								return (
-									<tr key={user.discordId} className={color}>
-										<td>{user.discordId}</td>
-										<td>{user.username}</td>
-										<td>{user.mvpStatus}</td>
+									<tr
+										key={archive.gameHandle}
+										className={color}
+									>
+										<td>{archive.gameHandle}</td>
+										<td>{archive.gameTitle}</td>
+										<td>{archive.spreadsheetURL}</td>
 										<td className="flex flex-row justify-center gap-2 p-2">
 											<FontAwesomeIcon
 												icon={faPenToSquare}
