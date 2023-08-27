@@ -47,6 +47,13 @@ export default function Home() {
 						internalLink="/dashboard/archives"
 						linkText="Manage Archives"
 					/>
+
+					<InfoPanel
+						name="Roles"
+						info="Create a new role"
+						internalLink="/dashboard/roles"
+						linkText="Create Role"
+					/>
 				</div>
 			</main>
 		</>
