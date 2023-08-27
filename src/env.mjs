@@ -11,6 +11,8 @@ export const env = createEnv({
 		NODE_ENV: z.enum(["development", "test", "production"]),
 		CLERK_SECRET_KEY: z.string(),
 		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
+		OAUTH_DISCORD_CLIENT_ID: z.string(),
+		OAUTH_DISCORD_SECRET: z.string(),
 	},
 
 	/**
@@ -32,6 +34,8 @@ export const env = createEnv({
 		CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
 		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
 			process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+		OAUTH_DISCORD_CLIENT_ID: process.env.OAUTH_DISCORD_CLIENT_ID,
+		OAUTH_DISCORD_SECRET: process.env.OAUTH_DISCORD_SECRET,
 		// NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 	},
 	/**

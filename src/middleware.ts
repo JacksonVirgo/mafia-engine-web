@@ -1,7 +1,7 @@
 import { authMiddleware, clerkClient } from "@clerk/nextjs";
 import type { User } from "@clerk/nextjs/dist/types/server";
 import { NextResponse } from "next/server";
-import type { AuthResponse } from "./pages/api/auth";
+import type { AuthResponse } from "./pages/api/authCheck";
 import type { Permission } from "@prisma/client";
 
 type Routes = {
@@ -17,14 +17,7 @@ const ROUTES: Routes = {
 	Moderator: [],
 	Host: [],
 	User: ["/dashboard"],
-	Public: [
-		"/",
-		"/login",
-		"/about",
-		"/downloads",
-		"/gameplay",
-		"/dashboard/roles",
-	],
+	Public: ["/", "/login", "/about", "/downloads", "/gameplay"],
 };
 
 // THE ORDER OF THIS ARRAY IS IMPORTANT
@@ -98,7 +91,7 @@ export default authMiddleware({
 
 		try {
 			const val = await fetch(
-				`${baseRoute.href}/api/auth?id=${discordAccount.externalId}`
+				`${baseRoute.href}/api/authCheck?id=${discordAccount.externalId}`
 			);
 
 			switch (val.status) {

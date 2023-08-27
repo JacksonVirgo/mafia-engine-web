@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, adminProcedure } from "~/server/api/trpc";
 
 export const roleRouter = createTRPCRouter({
-	createRole: publicProcedure
+	createRole: adminProcedure
 		.input(
 			z.object({
 				name: z.string(),
