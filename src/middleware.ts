@@ -17,7 +17,14 @@ const ROUTES: Routes = {
 	Moderator: [],
 	Host: [],
 	User: ["/dashboard"],
-	Public: ["/", "/login", "/about", "/downloads", "/gameplay"],
+	Public: [
+		"/",
+		"/login",
+		"/about",
+		"/downloads",
+		"/gameplay",
+		"/dashboard/roles",
+	],
 };
 
 // THE ORDER OF THIS ARRAY IS IMPORTANT
