@@ -2,7 +2,6 @@ import { authMiddleware, clerkClient } from "@clerk/nextjs";
 import type { User } from "@clerk/nextjs/dist/types/server";
 import { NextResponse } from "next/server";
 import type { AuthResponse } from "./pages/api/authCheck";
-import type { Permission } from "@prisma/client";
 
 type Routes = {
 	Admin: string[];
@@ -19,24 +18,6 @@ const ROUTES: Routes = {
 	User: ["/dashboard"],
 	Public: ["/", "/login", "/about", "/downloads", "/gameplay"],
 };
-
-// THE ORDER OF THIS ARRAY IS IMPORTANT
-// DO NOT CHANGE IT
-// I REPEAT
-// DO NOT CHANGE IT
-// I will create unit tests for this later.
-const PERMISSION_TREE: Permission[] = ["Admin", "Moderator", "Host", "User"];
-
-function isPermissionOrHigher(permission: Permission, request: Permission) {
-	const permissionIndex = PERMISSION_TREE.indexOf(permission);
-	const requestIndex = PERMISSION_TREE.indexOf(request);
-
-	if (permissionIndex === -1) return false;
-	if (requestIndex === -1) return false;
-
-	if (permissionIndex < requestIndex) return false;
-	return true;
-}
 
 function getDiscordUser(user: User) {
 	const accounts = user.externalAccounts;
@@ -76,6 +57,8 @@ export default authMiddleware({
 		if (auth.isPublicRoute) return NextResponse.next();
 		if (auth.isApiRoute) return NextResponse.next();
 
+		const pathname = new URL(req.url).pathname;
+
 		const baseRoute = new URL("/", req.url);
 		const loginRoute = new URL("/login", req.url);
 		const dashboardRoute = new URL("/dashboard", req.url);
@@ -98,7 +81,6 @@ export default authMiddleware({
 				case 400:
 				case 404:
 					return NextResponse.redirect(loginRoute);
-					break;
 				case 200:
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 					const json = await val.json();
@@ -108,31 +90,27 @@ export default authMiddleware({
 					if ("error" in json)
 						return NextResponse.redirect(loginRoute);
 
-					const pathname = req.nextUrl.pathname;
+					const isAdmin = json.permission === "Admin";
+					const isModerator = json.permission === "Moderator";
+					const isHost = json.permission === "Host";
+					const isUser = json.permission === "User";
 
-					if (ROUTES.Admin.includes(pathname)) {
-						if (isPermissionOrHigher(json.permission, "Admin"))
-							return NextResponse.next();
-					} else if (ROUTES.Moderator.includes(pathname)) {
-						if (isPermissionOrHigher(json.permission, "Moderator"))
-							return NextResponse.next();
-					} else if (ROUTES.Host.includes(pathname)) {
-						if (isPermissionOrHigher(json.permission, "Host"))
-							return NextResponse.next();
-					} else if (ROUTES.User.includes(pathname)) {
-						if (isPermissionOrHigher(json.permission, "User"))
-							return NextResponse.next();
-					} else {
-						// To be safe, redirect to dashboard.
-						return NextResponse.redirect(dashboardRoute);
-					}
-					break;
+					if (isAdmin) return NextResponse.next();
+
+					if (
+						ROUTES.User.includes(pathname) &&
+						(isUser || isHost || isModerator || isAdmin)
+					)
+						return NextResponse.next();
+
+					return NextResponse.redirect(dashboardRoute);
+
 				default:
 					console.log(
 						"Unknown status response in middleware:",
 						val.status
 					);
-					return NextResponse.redirect(baseRoute);
+					return NextResponse.redirect(dashboardRoute);
 			}
 		} catch (err) {
 			console.log(err);
