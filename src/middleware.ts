@@ -16,7 +16,7 @@ const ROUTES: Routes = {
 	Moderator: [],
 	Host: [],
 	User: ["/dashboard"],
-	Public: ["/", "/login", "/about", "/downloads", "/gameplay"],
+	Public: ["/", "/login", "/signup", "/about", "/downloads", "/gameplay"],
 };
 
 function getDiscordUser(user: User) {
