@@ -34,7 +34,7 @@ export default function Downloads() {
 					/>
 					<DownloadPanel
 						name="Windows"
-						// link="https://docs.google.com/uc?export=download&id=1zWsnYp12cja9U5RjbClMywH1qN2ke2xF"
+						link="https://docs.google.com/uc?export=download&id=12JjgehAMvwEIu0MCvBr-3gfh76GmsDk_"
 					/>
 				</div>
 			</main>

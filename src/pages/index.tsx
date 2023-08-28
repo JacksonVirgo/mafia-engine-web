@@ -10,7 +10,7 @@ export default function Home() {
 				<title>Mafia Engine</title>
 			</Head>
 			<main
-				className="flex h-smallview w-auto flex-col items-center justify-center bg-repeat text-white"
+				className="flex h-smallview w-auto flex-col items-center justify-center bg-repeat pb-16 text-white"
 				style={{
 					backgroundImage: "url(/chalkboard.jpg)",
 				}}
@@ -43,9 +43,6 @@ export default function Home() {
 						link="https://www.youtube.com/@social-deduction"
 						linkText="Check out our YouTube"
 					/>
-				</div>
-				<div className="mb-16 hidden w-48 text-center sm:block">
-					<JoinWaitlist />
 				</div>
 			</main>
 		</>

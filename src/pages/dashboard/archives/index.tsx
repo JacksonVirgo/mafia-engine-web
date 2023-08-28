@@ -18,6 +18,7 @@ import {
 	faChevronDown,
 	faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 
 export default function Home() {
 	const [rowsPerPage] = useState(10);
@@ -65,6 +66,14 @@ export default function Home() {
 				<div className="block p-6 text-center sm:hidden">
 					Your screen is too small to view the table, please use a
 					larger device.
+				</div>
+
+				<div className="hidden w-4/5 flex-row justify-end pb-2 sm:flex">
+					<Link href="/dashboard/archives/create">
+						<span className="w-40 select-none border-1 border-white bg-zinc-500 p-1 text-center hover:cursor-pointer hover:bg-zinc-600">
+							Create Archive
+						</span>
+					</Link>
 				</div>
 
 				<table className="hidden w-4/5 table-fixed border-2 border-white p-4 text-center text-xs sm:table lg:text-base">
