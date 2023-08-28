@@ -18,7 +18,7 @@ export default function Home() {
 	return (
 		<>
 			<Head>
-				<title>Mafia Engine - Login</title>
+				<title>Mafia Engine - Signup</title>
 			</Head>
 			<main
 				className="flex h-smallview flex-col items-center justify-center bg-repeat text-white"
