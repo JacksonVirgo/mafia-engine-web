@@ -12,7 +12,7 @@ type MenuBarProps = {
 };
 export default function MenuBar({ attached }: MenuBarProps) {
 	const user = useUser();
-	const router = useRouter();
+	// const router = useRouter();
 
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -24,13 +24,12 @@ export default function MenuBar({ attached }: MenuBarProps) {
 				}`}
 			>
 				<MenuButton name="Home" path="/" />
-				{/* <MenuButton name="Gameplay" path="/gameplay" /> */}
 				<MenuButton name="Contact" path="/contact" />
 				<MenuButton name="Downloads" path="/downloads" />
 
-				{user.isSignedIn && router.pathname !== "/dashboard" && (
+				{/* {user.isSignedIn && router.pathname !== "/dashboard" && (
 					<MenuButton name="Dashboard" path="/dashboard" />
-				)}
+				)} */}
 				<div className="grow"></div>
 				{user.isSignedIn && (
 					<UserButton
@@ -106,11 +105,11 @@ type MenuBarPageProps = {
 };
 function MenuBarPage({ pageActive, onExit }: MenuBarPageProps) {
 	const user = useUser();
-	const router = useRouter();
+	// const router = useRouter();
 	if (!pageActive) return null;
 
 	return (
-		<div className="fixed z-20 flex h-full w-full flex-col items-center justify-center bg-zinc-700 text-center">
+		<div className="absolute top-0 z-20 flex h-full w-full flex-col items-center justify-center bg-zinc-700 text-center">
 			<div className="absolute right-0 top-0 m-4 flex flex-row items-center justify-end text-center">
 				<div onClick={onExit}>
 					<FontAwesomeIcon icon={"circle-xmark"} size="2x" />
@@ -122,7 +121,7 @@ function MenuBarPage({ pageActive, onExit }: MenuBarPageProps) {
 			<MenuButton name="Contact" path="/contact" menuPage={true} />
 			<MenuButton name="Downloads" path="/downloads" menuPage={true} />
 
-			{user.isSignedIn && router.pathname !== "/dashboard" && (
+			{/* {user.isSignedIn && router.pathname !== "/dashboard" && (
 				<>
 					<MenuButton
 						name="Dashboard"
@@ -130,7 +129,7 @@ function MenuBarPage({ pageActive, onExit }: MenuBarPageProps) {
 						menuPage={true}
 					/>
 				</>
-			)}
+			)} */}
 
 			{!user.isSignedIn && (
 				<>

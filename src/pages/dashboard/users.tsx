@@ -4,7 +4,6 @@ import { AbsoluteCopyright } from "~/components/Copyright";
 import MenuBar from "~/components/MenuBar";
 import { api } from "~/utils/api";
 import React from "react";
-import { Spinner } from "@nextui-org/react";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -38,6 +37,14 @@ export default function Home() {
 		search: nameSearch,
 		idSearch: idSearch,
 	});
+
+	const getBlankArray = () => {
+		const arr = [];
+		for (let i = 0; i < rowsPerPage; i++) {
+			arr.push(i);
+		}
+		return arr;
+	};
 
 	useEffect(() => {
 		userQuery
@@ -143,40 +150,69 @@ export default function Home() {
 						</tr>
 					</thead>
 					<tbody>
-						{userQuery.data ? (
-							userQuery.data.users.map((user, index) => {
-								const color =
-									index % 2 == 0
-										? "bg-zinc-500"
-										: "bg-zinc-600";
-								return (
-									<tr key={user.discordId} className={color}>
-										<td>{user.discordId}</td>
-										<td>{user.username}</td>
-										<td>{user.mvpStatus}</td>
-										<td className="flex flex-row justify-center gap-2 p-2">
-											<FontAwesomeIcon
-												icon={faPenToSquare}
-												className="hover:cursor-pointer"
-											/>
-											<FontAwesomeIcon
-												icon={faX}
-												className="text-red-500 hover:cursor-pointer"
-											/>
-										</td>
-									</tr>
-								);
-							})
-						) : (
-							<tr>
-								<td
-									colSpan={4}
-									className="bg-color bg-zinc-600"
-								>
-									<Spinner color="white" />
-								</td>
-							</tr>
-						)}
+						{userQuery.data
+							? userQuery.data.users.map((user, index) => {
+									const color =
+										index % 2 == 0
+											? "bg-zinc-500"
+											: "bg-zinc-600";
+									return (
+										<tr
+											key={user.discordId}
+											className={color}
+										>
+											<td>{user.discordId}</td>
+											<td>{user.username}</td>
+											<td>{user.mvpStatus}</td>
+											<td className="flex flex-row justify-center gap-2 p-2">
+												<FontAwesomeIcon
+													icon={faPenToSquare}
+													className="hover:cursor-pointer"
+												/>
+												<FontAwesomeIcon
+													icon={faX}
+													className="text-red-500 hover:cursor-pointer"
+												/>
+											</td>
+										</tr>
+									);
+							  })
+							: getBlankArray().map((v, index) => {
+									const color =
+										index % 2 == 0
+											? "bg-zinc-500"
+											: "bg-zinc-600";
+
+									return (
+										<tr key={v} className={color}>
+											<td>
+												<span className="w-full animate-pulse rounded-md bg-zinc-400 text-zinc-400">
+													416757703516356628
+												</span>
+											</td>
+											<td>
+												<span className="w-full animate-pulse rounded-md bg-zinc-400 text-zinc-400">
+													416757703516356628
+												</span>
+											</td>
+											<td>
+												<span className="w-full animate-pulse rounded-md bg-zinc-400 text-zinc-400">
+													416757703516356628
+												</span>
+											</td>
+											<td className="flex flex-row justify-center gap-2 p-2">
+												<FontAwesomeIcon
+													icon={faPenToSquare}
+													className="opacity-0 hover:cursor-pointer"
+												/>
+												<FontAwesomeIcon
+													icon={faX}
+													className="opacity-0 hover:cursor-pointer"
+												/>
+											</td>
+										</tr>
+									);
+							  })}
 					</tbody>
 				</table>
 
