@@ -38,10 +38,6 @@ export default function MenuBar({ attached }: MenuBarProps) {
 			path: "/pricing",
 		},
 		{
-			name: "Contact",
-			path: "/contact",
-		},
-		{
 			name: "Wiki",
 			path: "https://discord-mafia-role-cards.fandom.com/wiki/Discord_Mafia_Role_cards_Wiki",
 			external: true,
@@ -209,7 +205,6 @@ function MenuBarPage({ pageActive, onExit }: MenuBarPageProps) {
 			<MenuButton name="Home" path="/" menuPage={true} />
 			<MenuButton name="Downloads" path="/downloads" menuPage={true} />
 			<MenuButton name="Pricing" path="/pricing" menuPage={true} />
-			<MenuButton name="Contact" path="/contact" menuPage={true} />
 
 			{/* {user.isSignedIn && router.pathname !== "/dashboard" && (
 				<>
