@@ -4,11 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-	width: 100dvw;
-	width: 100vw;
-}
-
 *:focus {
 	outline: none;
 }

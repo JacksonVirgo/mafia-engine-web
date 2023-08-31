@@ -2,28 +2,6 @@ import { z } from "zod";
 import { createTRPCRouter, restrictedProcedure } from "~/server/api/trpc";
 
 export const discordRouter = createTRPCRouter({
-	getUserData: restrictedProcedure.query(
-		async ({ ctx: { prisma, discordId } }) => {
-			const userData = await prisma.user.findUnique({
-				where: {
-					discordId,
-				},
-			});
-
-			if (!userData)
-				return {
-					user: null,
-				};
-
-			return {
-				user: {
-					discordId: userData.discordId,
-					username: userData.username,
-				},
-			};
-		}
-	),
-
 	users: restrictedProcedure
 		.input(
 			z.object({
@@ -97,5 +75,21 @@ export const discordRouter = createTRPCRouter({
 				archives,
 				count: totalArchives,
 			};
+		}),
+
+	userData: restrictedProcedure
+		.input(
+			z.object({
+				id: z.string(),
+			})
+		)
+		.mutation(async ({ ctx: { prisma }, input }) => {
+			const user = await prisma.user.findUnique({
+				where: {
+					discordId: input.id,
+				},
+			});
+
+			return user ?? null;
 		}),
 });

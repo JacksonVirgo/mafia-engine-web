@@ -23,6 +23,9 @@ export default {
 			height: {
 				smallview: "100svh",
 			},
+			backgroundColor: {
+				darkGray: "#1F1F1F",
+			},
 		},
 	},
 	darkMode: "class",
