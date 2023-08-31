@@ -16,7 +16,7 @@ export default function Home() {
 			<Head>
 				<title>Mafia Engine</title>
 			</Head>
-			<main className="bg-zinc-900">
+			<main className="bg-darkGray">
 				<div
 					className="box-border flex h-smallview flex-col items-center justify-center bg-darkGray bg-repeat pb-16 text-white sm:pt-24"
 					style={{
@@ -57,6 +57,7 @@ export default function Home() {
 							linkText="Check out our YouTube"
 						/>
 					</div>
+					<JoinWaitlist />{" "}
 				</div>
 			</main>
 		</>
@@ -65,10 +66,15 @@ export default function Home() {
 
 export function JoinWaitlist() {
 	return (
-		<a href="https://discord.gg/social-deduction" rel="noopener noreferrer">
-			<div className="rounded-full border border-white bg-opacity-100 p-2 px-4 text-center hover:bg-red-500 hover:bg-opacity-20 hover:underline">
-				<span>Join the Waitlist</span>
-			</div>
-		</a>
+		<div>
+			<a
+				href="https://discord.gg/social-deduction"
+				rel="noopener noreferrer"
+			>
+				<div className="rounded-full border border-white bg-opacity-100 p-2 px-4 text-center hover:bg-red-500 hover:bg-opacity-20 hover:underline">
+					<span>Join the Waitlist</span>
+				</div>
+			</a>
+		</div>
 	);
 }
