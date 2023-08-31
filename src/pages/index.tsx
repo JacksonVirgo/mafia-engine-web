@@ -18,7 +18,7 @@ export default function Home() {
 			</Head>
 			<main className="bg-zinc-900">
 				<div
-					className="box-border flex h-smallview flex-col items-center justify-center bg-repeat pb-16 text-white sm:pt-24"
+					className="box-border flex h-smallview flex-col items-center justify-center bg-darkGray bg-repeat pb-16 text-white sm:pt-24"
 					style={{
 						backgroundImage: "url(/chalkboard.jpg)",
 					}}
