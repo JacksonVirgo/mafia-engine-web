@@ -55,17 +55,34 @@ export default function MenuBar({ attached }: MenuBarProps) {
 					attached ? "" : "absolute left-0 top-0"
 				}`}
 			>
-				<div className="flex grow flex-row">
+				<div className="flex grow flex-row gap-2 pl-4">
+					<Link href="/">
+						<div className="flex aspect-square flex-col justify-center">
+							<div className="font-extrabold">
+								<span className="text-red-500">M</span>
+								<span>E</span>
+							</div>
+						</div>
+					</Link>
+					<div className="h-full align-middle font-extrabold">
+						&nbsp;
+					</div>
 					{menuItems.map((item, index) => {
 						const { name, path, external } = item;
 						return (
-							<div key={item.name} className="flex flex-row">
+							<div
+								key={item.name}
+								className="flex flex-row gap-2"
+							>
 								{index != 0 && (
-									<div className="h-full px-2 align-middle font-extrabold">
+									<div className="h-full align-middle font-extrabold">
 										·
 									</div>
 								)}
-								<Link href={path}>
+								<Link
+									href={path}
+									className="flex h-full flex-col justify-center"
+								>
 									<div
 										className={`text-center align-middle text-sm hover:cursor-pointer hover:underline ${
 											router.pathname == path
@@ -87,7 +104,6 @@ export default function MenuBar({ attached }: MenuBarProps) {
 						);
 					})}
 				</div>
-
 				{user.isSignedIn && (
 					<UserButton
 						appearance={{
