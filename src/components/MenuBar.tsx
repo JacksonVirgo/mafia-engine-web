@@ -6,15 +6,47 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 import HotdogMenuButton from "./navigation/HotdogMenu";
+import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 
 type MenuBarProps = {
 	attached?: boolean;
 };
+
+type MenuButtonProps = {
+	name: string;
+	path: string;
+	menuPage?: boolean;
+	external?: boolean;
+};
+
 export default function MenuBar({ attached }: MenuBarProps) {
 	const user = useUser();
-	// const router = useRouter();
+	const router = useRouter();
 
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [menuItems] = useState<Array<MenuButtonProps>>([
+		{
+			name: "Home",
+			path: "/",
+		},
+		{
+			name: "Downloads",
+			path: "/downloads",
+		},
+		{
+			name: "Pricing",
+			path: "/pricing",
+		},
+		{
+			name: "Contact",
+			path: "/contact",
+		},
+		{
+			name: "Wiki",
+			path: "https://discord-mafia-role-cards.fandom.com/wiki/Discord_Mafia_Role_cards_Wiki",
+			external: true,
+		},
+	]);
 
 	return (
 		<>
@@ -23,15 +55,42 @@ export default function MenuBar({ attached }: MenuBarProps) {
 					attached ? "" : "absolute left-0 top-0"
 				}`}
 			>
-				<MenuButton name="Home" path="/" />
-				<MenuButton name="Downloads" path="/downloads" />
-				<MenuButton name="Pricing" path="/pricing" />
-				<MenuButton name="Contact" path="/contact" />
-
-				{/* {user.isSignedIn && router.pathname !== "/dashboard" && (
-					<MenuButton name="Dashboard" path="/dashboard" />
-				)} */}
-				<div className="grow"></div>
+				<ul className="flex grow flex-row">
+					{menuItems.map((item, index) => {
+						const { name, path, external } = item;
+						return (
+							<>
+								{index != 0 && (
+									<li
+										key={name + "-" + index}
+										className="h-full px-2 align-middle font-extrabold"
+									>
+										·
+									</li>
+								)}
+								<Link href={path}>
+									<li
+										key={item.name}
+										className={`items-center rounded-full bg-opacity-100 text-center align-middle text-sm  hover:cursor-pointer hover:underline ${
+											router.pathname == path
+												? "underline decoration-red-400 decoration-2 underline-offset-4"
+												: ""
+										}`}
+									>
+										{/* <FontAwesomeIcon icon={faHome} /> */}
+										<span className="pl-1">{name}</span>
+										{external && (
+											<FontAwesomeIcon
+												icon={faArrowUpRightFromSquare}
+												className="scale-75 pl-1"
+											/>
+										)}
+									</li>
+								</Link>
+							</>
+						);
+					})}
+				</ul>
 
 				{user.isSignedIn && (
 					<UserButton
@@ -62,12 +121,12 @@ export default function MenuBar({ attached }: MenuBarProps) {
 	);
 }
 
-type MenuButtonProps = {
-	name: string;
-	path: string;
-	menuPage?: boolean;
-};
-export function MenuButton({ name, path, menuPage }: MenuButtonProps) {
+export function MenuButton({
+	name,
+	path,
+	menuPage,
+	external,
+}: MenuButtonProps) {
 	const router = useRouter();
 
 	if (menuPage)
@@ -78,21 +137,32 @@ export function MenuButton({ name, path, menuPage }: MenuButtonProps) {
 						router.pathname == path ? "font-extrabold" : ""
 					}`}
 				>
-					{/* <FontAwesomeIcon icon={faHome} /> */}
 					<span className="pl-1">{name}</span>
+					{external && (
+						<FontAwesomeIcon
+							icon={faArrowUpRightFromSquare}
+							className="scale-50 pl-2"
+						/>
+					)}
 				</div>
 			</Link>
 		);
 	return (
 		<Link href={path}>
-			<div
+			<li
 				className={`items-center rounded-full bg-opacity-100 p-1 px-4 text-center align-middle text-sm  hover:bg-white hover:bg-opacity-10 hover:underline ${
 					router.pathname == path ? "bg-white bg-opacity-25" : ""
 				}`}
 			>
 				{/* <FontAwesomeIcon icon={faHome} /> */}
 				<span className="pl-1">{name}</span>
-			</div>
+				{external && (
+					<FontAwesomeIcon
+						icon={faArrowUpRightFromSquare}
+						className="scale-75 pl-1"
+					/>
+				)}
+			</li>
 		</Link>
 	);
 }
