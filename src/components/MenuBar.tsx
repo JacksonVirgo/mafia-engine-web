@@ -55,23 +55,19 @@ export default function MenuBar({ attached }: MenuBarProps) {
 					attached ? "" : "absolute left-0 top-0"
 				}`}
 			>
-				<ul className="flex grow flex-row">
+				<div className="flex grow flex-row">
 					{menuItems.map((item, index) => {
 						const { name, path, external } = item;
 						return (
-							<>
+							<div key={item.name} className="flex flex-row">
 								{index != 0 && (
-									<li
-										key={name + "-" + index}
-										className="h-full px-2 align-middle font-extrabold"
-									>
+									<div className="h-full px-2 align-middle font-extrabold">
 										·
-									</li>
+									</div>
 								)}
 								<Link href={path}>
-									<li
-										key={item.name}
-										className={`items-center rounded-full bg-opacity-100 text-center align-middle text-sm  hover:cursor-pointer hover:underline ${
+									<div
+										className={`text-center align-middle text-sm hover:cursor-pointer hover:underline ${
 											router.pathname == path
 												? "underline decoration-red-400 decoration-2 underline-offset-4"
 												: ""
@@ -85,12 +81,12 @@ export default function MenuBar({ attached }: MenuBarProps) {
 												className="scale-75 pl-1"
 											/>
 										)}
-									</li>
+									</div>
 								</Link>
-							</>
+							</div>
 						);
 					})}
-				</ul>
+				</div>
 
 				{user.isSignedIn && (
 					<UserButton
