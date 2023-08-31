@@ -24,13 +24,15 @@ export default function MenuBar({ attached }: MenuBarProps) {
 				}`}
 			>
 				<MenuButton name="Home" path="/" />
-				<MenuButton name="Contact" path="/contact" />
 				<MenuButton name="Downloads" path="/downloads" />
+				<MenuButton name="Pricing" path="/pricing" />
+				<MenuButton name="Contact" path="/contact" />
 
 				{/* {user.isSignedIn && router.pathname !== "/dashboard" && (
 					<MenuButton name="Dashboard" path="/dashboard" />
 				)} */}
 				<div className="grow"></div>
+
 				{user.isSignedIn && (
 					<UserButton
 						appearance={{
@@ -68,12 +70,14 @@ type MenuButtonProps = {
 export function MenuButton({ name, path, menuPage }: MenuButtonProps) {
 	const router = useRouter();
 
-	if (router.pathname === path) return null;
-
 	if (menuPage)
 		return (
 			<Link href={path}>
-				<div className="items-center rounded-full bg-opacity-100 p-1 px-4 text-center align-middle text-3xl  hover:bg-white hover:bg-opacity-10 hover:underline">
+				<div
+					className={`items-center rounded-full bg-opacity-100 p-1 px-4 text-center align-middle text-3xl  hover:bg-white hover:bg-opacity-10 hover:underline ${
+						router.pathname == path ? "font-extrabold" : ""
+					}`}
+				>
 					{/* <FontAwesomeIcon icon={faHome} /> */}
 					<span className="pl-1">{name}</span>
 				</div>
@@ -81,7 +85,11 @@ export function MenuButton({ name, path, menuPage }: MenuButtonProps) {
 		);
 	return (
 		<Link href={path}>
-			<div className="items-center rounded-full bg-opacity-100 p-1 px-4 text-center align-middle text-sm  hover:bg-white hover:bg-opacity-10 hover:underline">
+			<div
+				className={`items-center rounded-full bg-opacity-100 p-1 px-4 text-center align-middle text-sm  hover:bg-white hover:bg-opacity-10 hover:underline ${
+					router.pathname == path ? "bg-white bg-opacity-25" : ""
+				}`}
+			>
 				{/* <FontAwesomeIcon icon={faHome} /> */}
 				<span className="pl-1">{name}</span>
 			</div>
@@ -117,9 +125,9 @@ function MenuBarPage({ pageActive, onExit }: MenuBarPageProps) {
 			</div>
 
 			<MenuButton name="Home" path="/" menuPage={true} />
-			{/* <MenuButton name="Gameplay" path="/gameplay" menuPage={true} /> */}
-			<MenuButton name="Contact" path="/contact" menuPage={true} />
 			<MenuButton name="Downloads" path="/downloads" menuPage={true} />
+			<MenuButton name="Pricing" path="/pricing" menuPage={true} />
+			<MenuButton name="Contact" path="/contact" menuPage={true} />
 
 			{/* {user.isSignedIn && router.pathname !== "/dashboard" && (
 				<>

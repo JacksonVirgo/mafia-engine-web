@@ -1,8 +1,13 @@
 import Head from "next/head";
 import { AbsoluteCopyright } from "~/components/Copyright";
 import MenuBar from "~/components/MenuBar";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { isInteger } from "~/utils/validation";
+import type { Snowflake } from "discord.js";
+import { api } from "~/utils/api";
+import Spinner from "~/components/Spinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const QUEUES = [
 	"Main",
@@ -14,13 +19,15 @@ const QUEUES = [
 ] as const;
 type Queue = (typeof QUEUES)[number];
 
+type User = [Snowflake, string];
+
 export default function Home() {
 	const [archiveName, setSetupName] = useState<string>();
 	const [queue, setGameQueue] = useState<Queue>();
 	const [gameNumber, setGameNumber] = useState<string>();
 
-	const [mainHosts, setMainHosts] = useState<string>();
-	const [coHosts, setCoHosts] = useState<string>();
+	const [mainHosts, setMainHosts] = useState<User[]>();
+	const [coHosts, setCoHosts] = useState<User[]>();
 	const [players, setPlayers] = useState<string>();
 
 	const [spreadsheetUrl, setSpreadsheetUrl] = useState<string>();
@@ -172,41 +179,78 @@ export default function Home() {
 									<label htmlFor="setup-hosts">
 										Main Host/s
 									</label>
-									<div className="mx-2 mb-1 text-xs text-zinc-400">
-										List of Discord IDs, new line for each.
+									<div className="flex flex-col gap-2 p-2">
+										<UserSearchField
+											onAddUser={(user) => {
+												setMainHosts([
+													...(mainHosts ?? []),
+													user,
+												]);
+											}}
+										/>
+
+										<ul className="list-disc pl-5">
+											{mainHosts?.map(([id, name]) => {
+												return (
+													<li key={id}>
+														{id} - {name}
+													</li>
+												);
+											}) ?? <li>None</li>}
+										</ul>
 									</div>
-									<textarea
-										id="setup-hosts"
-										name="setup-hosts"
-										placeholder="List discord IDs..."
-										className={`mx-2 border-1 p-2 ${
-											mainHosts != "" &&
-											mainHosts != undefined
-												? "border-zinc-500"
-												: "border-red-500"
-										}`}
-										onChange={(e) =>
-											setMainHosts(e.target.value)
-										}
-									/>
 								</div>
 
 								<div className="flex flex-col">
 									<label htmlFor="setup-cohosts">
 										Co-Host/s
 									</label>
-									<div className="mx-2 mb-1 text-xs text-zinc-400">
-										List of Discord IDs, new line for each.
+									<div className="flex flex-col gap-2 p-2">
+										<UserSearchField
+											onAddUser={(user) => {
+												setCoHosts([
+													...(coHosts ?? []),
+													user,
+												]);
+											}}
+										/>
+
+										<ul className="list-disc pl-5">
+											{coHosts?.map(([id, name]) => {
+												return (
+													<li
+														key={id}
+														className="flex flex-row items-center justify-start gap-2 align-middle"
+													>
+														<span className="text-center text-xs">
+															{id}
+														</span>
+														<span>·</span>
+														<span>{name}</span>
+														<span
+															className="text-sm hover:cursor-pointer hover:text-red-500"
+															onClick={() => {
+																setCoHosts(
+																	coHosts?.filter(
+																		([
+																			hostId,
+																			_,
+																		]) =>
+																			hostId !=
+																			id
+																	)
+																);
+															}}
+														>
+															<FontAwesomeIcon
+																icon={faTrash}
+															/>
+														</span>
+													</li>
+												);
+											}) ?? <li>None</li>}
+										</ul>
 									</div>
-									<textarea
-										id="setup-cohosts"
-										name="setup-cohosts"
-										placeholder="List discord IDs..."
-										className={`mx-2 border-1 p-2`}
-										onChange={(e) =>
-											setCoHosts(e.target.value)
-										}
-									/>
 								</div>
 							</>
 						)}
@@ -261,5 +305,55 @@ export default function Home() {
 				</div>
 			</main>
 		</>
+	);
+}
+
+type UserSearchFieldProps = {
+	onAddUser?: (user: User) => void;
+};
+function UserSearchField({ onAddUser }: UserSearchFieldProps) {
+	const [discordId, setDiscordId] = useState<string>();
+	const userData = api.discord.userData.useMutation();
+	const [isLoading, setIsLoading] = useState(false);
+	const inputRef = useRef<HTMLInputElement>(null);
+
+	const buttonClicked = async () => {
+		if (!discordId) return;
+
+		setIsLoading(true);
+
+		const user = await userData.mutateAsync({ id: discordId });
+		if (user && onAddUser) {
+			onAddUser([user.discordId, user.username]);
+			if (inputRef?.current) inputRef.current.value = "";
+		}
+
+		setIsLoading(false);
+	};
+
+	return (
+		<div className="flex w-full flex-row gap-2">
+			<input
+				type="text"
+				placeholder="Discord ID"
+				className="grow pl-2"
+				onChange={(e) => setDiscordId(e.target.value)}
+				ref={inputRef}
+			/>
+
+			{!isLoading && (
+				<button
+					className="border-1 border-zinc-500 bg-zinc-600 p-1 hover:bg-zinc-700"
+					onClick={(e) => {
+						e.preventDefault();
+						buttonClicked().catch(console.log);
+					}}
+				>
+					Add Host
+				</button>
+			)}
+
+			{isLoading && <Spinner />}
+		</div>
 	);
 }
