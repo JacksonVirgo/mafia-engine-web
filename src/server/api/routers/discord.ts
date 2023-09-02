@@ -92,4 +92,20 @@ export const discordRouter = createTRPCRouter({
 
 			return user ?? null;
 		}),
+
+	waitlist: restrictedProcedure.mutation(
+		async ({ ctx: { prisma, discordId } }) => {
+			if (!discordId) return null;
+
+			const user = await prisma.user.findUnique({ where: { discordId } });
+			if (!user) return null;
+
+			const updatedUser = await prisma.user.update({
+				where: { id: user.id },
+				data: { onWaitlist: true },
+			});
+
+			return updatedUser;
+		}
+	),
 });
