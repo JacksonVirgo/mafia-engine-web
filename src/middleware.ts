@@ -15,11 +15,11 @@ const ROUTES: Routes = {
 	Admin: ["/dashboard/users", "/dashboard/archives", "/dashboard/roles"],
 	Moderator: [],
 	Host: [],
-	User: ["/dashboard"],
+	User: ["/dashboard", "/waitlist"],
 	Public: [
 		"/",
 		"/login",
-		"/signup",
+		"/sign-up",
 		"/about",
 		"/downloads",
 		"/gameplay",
@@ -64,6 +64,10 @@ export default authMiddleware({
 	async afterAuth(auth, req, _evt) {
 		if (auth.isPublicRoute) return NextResponse.next();
 		if (auth.isApiRoute) return NextResponse.next();
+
+		// Allow any router that is /login/*
+		if (req.url.startsWith("/login/")) return NextResponse.next();
+		if (req.url.startsWith("/sign-up/")) return NextResponse.next();
 
 		const pathname = new URL(req.url).pathname;
 

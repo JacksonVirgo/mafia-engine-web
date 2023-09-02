@@ -34,6 +34,7 @@ model User {
     permission   Permission @default(User) // Replace with guild-specific perms later
     signupBanned Boolean    @default(false)
     mvpStatus    Status     @default(None)
+    onWaitlist   Boolean    @default(false)
 
     gameHosts        GameHost[]
     signupCategories SignupUserJunction[]

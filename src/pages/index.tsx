@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AbsoluteCopyright } from "~/components/Copyright";
 import InfoPanel from "~/components/InfoPanel";
@@ -67,14 +68,11 @@ export default function Home() {
 export function JoinWaitlist() {
 	return (
 		<div>
-			<a
-				href="https://discord.gg/social-deduction"
-				rel="noopener noreferrer"
-			>
+			<Link href="/waitlist">
 				<div className="rounded-full border border-white bg-opacity-100 p-2 px-4 text-center hover:bg-red-500 hover:bg-opacity-20 hover:underline">
 					<span>Join the Waitlist</span>
 				</div>
-			</a>
+			</Link>
 		</div>
 	);
 }
