@@ -24,6 +24,7 @@ const ROUTES: Routes = {
 		"/downloads",
 		"/gameplay",
 		"/pricing",
+		"/eternalloading",
 	],
 };
 

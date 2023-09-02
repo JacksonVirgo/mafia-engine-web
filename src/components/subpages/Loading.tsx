@@ -1,3 +1,5 @@
+import Spinner from "../Spinner";
+
 export function Loading() {
 	return (
 		<div
@@ -6,8 +8,10 @@ export function Loading() {
 				backgroundImage: "url(/chalkboard.jpg)",
 			}}
 		>
-			<div className="ml-64 animate-pulse text-xl">
-				Loading Content...
+			<div className="flex w-full flex-row justify-center">
+				<span className="scale-150 animate-pulse">
+					<Spinner />
+				</span>
 			</div>
 		</div>
 	);
