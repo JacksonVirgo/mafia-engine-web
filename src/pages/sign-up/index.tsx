@@ -1,4 +1,4 @@
-import { SignIn, SignUp, useUser } from "@clerk/nextjs";
+import { SignUp, useUser } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import Head from "next/head";
 import { useRouter } from "next/router";

@@ -1,8 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { AbsoluteCopyright } from "~/components/Copyright";
-import InfoPanel from "~/components/InfoPanel";
 import MenuBar from "~/components/MenuBar";
 
 export default function Roles() {
